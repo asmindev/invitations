@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -7,8 +10,11 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        'Poppins', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+    --font-serif: 'Playfair Display', serif;
+    --font-script: 'Great Vibes', cursive;
 }
 
 @theme inline {
@@ -82,6 +88,17 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+
+    /* Wedding Color Palette */
+    --wedding-rose: #f4c2c2;
+    --wedding-rose-dark: #d4a5a5;
+    --wedding-cream: #fff8f0;
+    --wedding-beige: #f5eee6;
+    --wedding-gold: #d4af37;
+    --wedding-gold-light: #cfb53b;
+    --wedding-brown: #3e2723;
+    --wedding-gray: #4a4a4a;
+    --wedding-ivory: #fffaf0;
 }
 
 .dark {
@@ -119,10 +136,43 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
+}
+
+@layer utilities {
+    .font-serif {
+        font-family: var(--font-serif);
+    }
+    .font-script {
+        font-family: var(--font-script);
+    }
+    .wedding-section {
+        @apply px-4 py-20 md:px-8;
+    }
+    .wedding-container {
+        @apply mx-auto max-w-6xl;
+    }
+    .floral-divider {
+        @apply mx-auto my-8 w-full max-w-md;
+    }
+}
+
+@keyframes floralFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-floral-fade-in {
+    animation: floralFadeIn 0.8s ease-out;
 }

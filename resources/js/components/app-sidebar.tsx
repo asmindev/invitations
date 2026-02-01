@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd, LayoutDashboard, Settings } from 'lucide-react';
+import { Heart, LayoutDashboard, MessageCircle, UserCheck, Users } from 'lucide-react';
 import * as React from 'react';
 
 import {
@@ -9,57 +9,53 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem,
     SidebarRail,
 } from '@/components/ui/sidebar';
+import { Link, usePage } from '@inertiajs/react';
 
-// This is sample data.
 const data = {
     navMain: [
         {
             title: 'Dashboard',
-            url: route('dashboard'),
+            url: route('admin.dashboard'),
             icon: LayoutDashboard,
-            isActive: true,
-            items: [
-                {
-                    title: 'Overview',
-                    url: route('dashboard'),
-                },
-            ],
         },
         {
-            title: 'Settings',
-            url: '#',
-            icon: Settings,
-            items: [
-                {
-                    title: 'Profile',
-                    url: '#',
-                },
-            ],
+            title: 'Guests',
+            url: route('admin.guests.index'),
+            icon: Users,
+        },
+        {
+            title: 'RSVPs',
+            url: route('admin.rsvps.index'),
+            icon: UserCheck,
+        },
+        {
+            title: 'Wishes',
+            url: route('admin.wishes.index'),
+            icon: MessageCircle,
         },
     ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { url } = usePage();
+
     return (
         <Sidebar {...props} collapsible="icon">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <a href="#">
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                    <GalleryVerticalEnd className="size-4" />
+                            <Link href={route('admin.dashboard')}>
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gradient-to-br from-rose-400 to-pink-500 text-white">
+                                    <Heart className="size-4" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
-                                    <span className="font-semibold">Boilerplate</span>
-                                    <span className="">v1.0.0</span>
+                                    <span className="font-semibold">Wedding Admin</span>
+                                    <span className="text-xs text-muted-foreground">Marcell & Lisa</span>
                                 </div>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -67,27 +63,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarMenu>
-                        {data.navMain.map((item) => (
-                            <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild tooltip={item.title}>
-                                    <a href={item.url} className="font-medium">
-                                        {item.icon && <item.icon />}
-                                        <span>{item.title}</span>
-                                    </a>
-                                </SidebarMenuButton>
-                                {item.items?.length ? (
-                                    <SidebarMenuSub>
-                                        {item.items.map((subItem) => (
-                                            <SidebarMenuSubItem key={subItem.title}>
-                                                <SidebarMenuSubButton asChild isActive={item.isActive}>
-                                                    <a href={subItem.url}>{subItem.title}</a>
-                                                </SidebarMenuSubButton>
-                                            </SidebarMenuSubItem>
-                                        ))}
-                                    </SidebarMenuSub>
-                                ) : null}
-                            </SidebarMenuItem>
-                        ))}
+                        {data.navMain.map((item) => {
+                            const isActive = url.startsWith(new URL(item.url).pathname);
+                            return (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild tooltip={item.title} isActive={isActive}>
+                                        <Link href={item.url} className="font-medium">
+                                            {item.icon && <item.icon />}
+                                            <span>{item.title}</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            );
+                        })}
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
