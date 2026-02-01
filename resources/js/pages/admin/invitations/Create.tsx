@@ -1,3 +1,10 @@
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
@@ -26,214 +33,228 @@ export default function Create() {
     };
 
     return (
-        <>
+        <AdminLayout>
             <Head title="Create Invitation" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-4xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <h2 className="mb-6 text-2xl font-semibold text-gray-800">Create New Wedding Invitation</h2>
-
-                            <form onSubmit={submit} className="space-y-6">
-                                {/* Couple Names */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Groom Name *</label>
-                                        <input
-                                            type="text"
-                                            value={data.groom_name}
-                                            onChange={(e) => setData('groom_name', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            required
-                                        />
-                                        {errors.groom_name && <p className="mt-1 text-sm text-red-500">{errors.groom_name}</p>}
-                                    </div>
-
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Bride Name *</label>
-                                        <input
-                                            type="text"
-                                            value={data.bride_name}
-                                            onChange={(e) => setData('bride_name', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            required
-                                        />
-                                        {errors.bride_name && <p className="mt-1 text-sm text-red-500">{errors.bride_name}</p>}
-                                    </div>
+            <div className="mx-auto max-w-4xl">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Create New Wedding Invitation</CardTitle>
+                        <CardDescription>Fill in the details to create a new wedding invitation</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={submit} className="space-y-6">
+                            {/* Couple Names */}
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="groom_name">
+                                        Groom Name <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                        id="groom_name"
+                                        type="text"
+                                        value={data.groom_name}
+                                        onChange={(e) => setData('groom_name', e.target.value)}
+                                        required
+                                    />
+                                    {errors.groom_name && <p className="text-sm text-red-500">{errors.groom_name}</p>}
                                 </div>
 
-                                {/* Full Names */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Groom Full Name</label>
-                                        <input
-                                            type="text"
-                                            value={data.groom_full_name}
-                                            onChange={(e) => setData('groom_full_name', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Bride Full Name</label>
-                                        <input
-                                            type="text"
-                                            value={data.bride_full_name}
-                                            onChange={(e) => setData('bride_full_name', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                    </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="bride_name">
+                                        Bride Name <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                        id="bride_name"
+                                        type="text"
+                                        value={data.bride_name}
+                                        onChange={(e) => setData('bride_name', e.target.value)}
+                                        required
+                                    />
+                                    {errors.bride_name && <p className="text-sm text-red-500">{errors.bride_name}</p>}
                                 </div>
+                            </div>
 
-                                {/* Parents */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-4">
-                                        <h3 className="font-medium text-gray-700">Groom's Parents</h3>
-                                        <input
-                                            type="text"
-                                            placeholder="Father's Name"
-                                            value={data.groom_father}
-                                            onChange={(e) => setData('groom_father', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Mother's Name"
-                                            value={data.groom_mother}
-                                            onChange={(e) => setData('groom_mother', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                    </div>
-
-                                    <div className="space-y-4">
-                                        <h3 className="font-medium text-gray-700">Bride's Parents</h3>
-                                        <input
-                                            type="text"
-                                            placeholder="Father's Name"
-                                            value={data.bride_father}
-                                            onChange={(e) => setData('bride_father', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Mother's Name"
-                                            value={data.bride_mother}
-                                            onChange={(e) => setData('bride_mother', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Wedding Details */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Wedding Date *</label>
-                                        <input
-                                            type="date"
-                                            value={data.wedding_date}
-                                            onChange={(e) => setData('wedding_date', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            required
-                                        />
-                                        {errors.wedding_date && <p className="mt-1 text-sm text-red-500">{errors.wedding_date}</p>}
-                                    </div>
-
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Wedding Time</label>
-                                        <input
-                                            type="time"
-                                            value={data.wedding_time}
-                                            onChange={(e) => setData('wedding_time', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Slug & Hashtag */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                                            URL Slug (leave empty for auto-generate)
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.slug}
-                                            onChange={(e) => setData('slug', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            placeholder="e.g., john-jane-wedding"
-                                        />
-                                        {errors.slug && <p className="mt-1 text-sm text-red-500">{errors.slug}</p>}
-                                    </div>
-
-                                    <div>
-                                        <label className="mb-2 block text-sm font-medium text-gray-700">Hashtag</label>
-                                        <input
-                                            type="text"
-                                            value={data.hashtag}
-                                            onChange={(e) => setData('hashtag', e.target.value)}
-                                            className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            placeholder="#JohnAndJane2024"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Texts */}
-                                <div>
-                                    <label className="mb-2 block text-sm font-medium text-gray-700">Opening Text</label>
-                                    <textarea
-                                        value={data.opening_text}
-                                        onChange={(e) => setData('opening_text', e.target.value)}
-                                        rows={3}
-                                        className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        placeholder="Welcome message..."
+                            {/* Full Names */}
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="groom_full_name">Groom Full Name</Label>
+                                    <Input
+                                        id="groom_full_name"
+                                        type="text"
+                                        value={data.groom_full_name}
+                                        onChange={(e) => setData('groom_full_name', e.target.value)}
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="mb-2 block text-sm font-medium text-gray-700">Closing Text</label>
-                                    <textarea
-                                        value={data.closing_text}
-                                        onChange={(e) => setData('closing_text', e.target.value)}
-                                        rows={3}
-                                        className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                        placeholder="Thank you message..."
+                                <div className="space-y-2">
+                                    <Label htmlFor="bride_full_name">Bride Full Name</Label>
+                                    <Input
+                                        id="bride_full_name"
+                                        type="text"
+                                        value={data.bride_full_name}
+                                        onChange={(e) => setData('bride_full_name', e.target.value)}
                                     />
                                 </div>
+                            </div>
 
-                                {/* Active Status */}
-                                <div className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={data.is_active}
-                                        onChange={(e) => setData('is_active', e.target.checked)}
-                                        className="h-4 w-4 rounded border-gray-300 text-blue-600"
+                            {/* Parents */}
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-base">Groom's Parents</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="groom_father">Father's Name</Label>
+                                            <Input
+                                                id="groom_father"
+                                                type="text"
+                                                placeholder="Father's Name"
+                                                value={data.groom_father}
+                                                onChange={(e) => setData('groom_father', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="groom_mother">Mother's Name</Label>
+                                            <Input
+                                                id="groom_mother"
+                                                type="text"
+                                                placeholder="Mother's Name"
+                                                value={data.groom_mother}
+                                                onChange={(e) => setData('groom_mother', e.target.value)}
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-base">Bride's Parents</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="bride_father">Father's Name</Label>
+                                            <Input
+                                                id="bride_father"
+                                                type="text"
+                                                placeholder="Father's Name"
+                                                value={data.bride_father}
+                                                onChange={(e) => setData('bride_father', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="bride_mother">Mother's Name</Label>
+                                            <Input
+                                                id="bride_mother"
+                                                type="text"
+                                                placeholder="Mother's Name"
+                                                value={data.bride_mother}
+                                                onChange={(e) => setData('bride_mother', e.target.value)}
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            {/* Wedding Details */}
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="wedding_date">
+                                        Wedding Date <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                        id="wedding_date"
+                                        type="date"
+                                        value={data.wedding_date}
+                                        onChange={(e) => setData('wedding_date', e.target.value)}
+                                        required
                                     />
-                                    <label className="ml-2 block text-sm text-gray-700">Active (visible to public)</label>
+                                    {errors.wedding_date && <p className="text-sm text-red-500">{errors.wedding_date}</p>}
                                 </div>
 
-                                {/* Submit */}
-                                <div className="flex justify-end space-x-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => window.history.back()}
-                                        className="rounded-md border border-gray-300 px-6 py-2 text-gray-700 hover:bg-gray-50"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="rounded-md bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
-                                    >
-                                        {processing ? 'Creating...' : 'Create Invitation'}
-                                    </button>
+                                <div className="space-y-2">
+                                    <Label htmlFor="wedding_time">Wedding Time</Label>
+                                    <Input
+                                        id="wedding_time"
+                                        type="time"
+                                        value={data.wedding_time}
+                                        onChange={(e) => setData('wedding_time', e.target.value)}
+                                    />
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                            </div>
+
+                            {/* Slug & Hashtag */}
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="slug">URL Slug</Label>
+                                    <Input
+                                        id="slug"
+                                        type="text"
+                                        value={data.slug}
+                                        onChange={(e) => setData('slug', e.target.value)}
+                                        placeholder="e.g., john-jane-wedding"
+                                    />
+                                    <p className="text-xs text-muted-foreground">Leave empty for auto-generate</p>
+                                    {errors.slug && <p className="text-sm text-red-500">{errors.slug}</p>}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="hashtag">Hashtag</Label>
+                                    <Input
+                                        id="hashtag"
+                                        type="text"
+                                        value={data.hashtag}
+                                        onChange={(e) => setData('hashtag', e.target.value)}
+                                        placeholder="#JohnAndJane2024"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Texts */}
+                            <div className="space-y-2">
+                                <Label htmlFor="opening_text">Opening Text</Label>
+                                <Textarea
+                                    id="opening_text"
+                                    value={data.opening_text}
+                                    onChange={(e) => setData('opening_text', e.target.value)}
+                                    rows={3}
+                                    placeholder="Welcome message..."
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="closing_text">Closing Text</Label>
+                                <Textarea
+                                    id="closing_text"
+                                    value={data.closing_text}
+                                    onChange={(e) => setData('closing_text', e.target.value)}
+                                    rows={3}
+                                    placeholder="Thank you message..."
+                                />
+                            </div>
+
+                            {/* Active Status */}
+                            <div className="flex items-center space-x-2">
+                                <Switch id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked)} />
+                                <Label htmlFor="is_active" className="cursor-pointer">
+                                    Active (visible to public)
+                                </Label>
+                            </div>
+
+                            {/* Submit */}
+                            <div className="flex justify-end space-x-4">
+                                <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" disabled={processing}>
+                                    {processing ? 'Creating...' : 'Create Invitation'}
+                                </Button>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
             </div>
-        </>
+        </AdminLayout>
     );
 }
