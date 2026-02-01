@@ -45,7 +45,15 @@ interface Invitation {
 
 interface Props {
     invitation: Invitation;
-    sections: Record<string, any>;
+    sections: Record<
+        string,
+        {
+            id: number;
+            data: any;
+            is_visible: boolean;
+            order: number;
+        }
+    >;
 }
 
 export default function Edit({ invitation, sections }: Props) {
@@ -331,14 +339,70 @@ export default function Edit({ invitation, sections }: Props) {
                             </form>
                         )}
 
-                        {activeTab === 'quote' && <QuoteEditor invitationId={invitation.id} initialData={sections.quote} />}
-                        {activeTab === 'save_date' && <SaveDateEditor invitationId={invitation.id} initialData={sections.save_date} />}
-                        {activeTab === 'rundown' && <RundownEditor invitationId={invitation.id} initialData={sections.rundown} />}
-                        {activeTab === 'gallery' && <GalleryEditor invitationId={invitation.id} initialData={sections.gallery} />}
-                        {activeTab === 'love_story' && <LoveStoryEditor invitationId={invitation.id} initialData={sections.love_story} />}
-                        {activeTab === 'wedding_gift' && <WeddingGiftEditor invitationId={invitation.id} initialData={sections.wedding_gift} />}
-                        {activeTab === 'protocol' && <ProtocolEditor invitationId={invitation.id} initialData={sections.protocol} />}
-                        {activeTab === 'footer' && <FooterEditor invitationId={invitation.id} initialData={sections.footer} />}
+                        {activeTab === 'quote' && (
+                            <QuoteEditor
+                                invitationId={invitation.id}
+                                initialData={sections.quote?.data}
+                                sectionId={sections.quote?.id}
+                                isVisible={sections.quote?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'save_date' && (
+                            <SaveDateEditor
+                                invitationId={invitation.id}
+                                initialData={sections.save_date?.data}
+                                sectionId={sections.save_date?.id}
+                                isVisible={sections.save_date?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'rundown' && (
+                            <RundownEditor
+                                invitationId={invitation.id}
+                                initialData={sections.rundown?.data}
+                                sectionId={sections.rundown?.id}
+                                isVisible={sections.rundown?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'gallery' && (
+                            <GalleryEditor
+                                invitationId={invitation.id}
+                                initialData={sections.gallery?.data}
+                                sectionId={sections.gallery?.id}
+                                isVisible={sections.gallery?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'love_story' && (
+                            <LoveStoryEditor
+                                invitationId={invitation.id}
+                                initialData={sections.love_story?.data}
+                                sectionId={sections.love_story?.id}
+                                isVisible={sections.love_story?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'wedding_gift' && (
+                            <WeddingGiftEditor
+                                invitationId={invitation.id}
+                                initialData={sections.wedding_gift?.data}
+                                sectionId={sections.wedding_gift?.id}
+                                isVisible={sections.wedding_gift?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'protocol' && (
+                            <ProtocolEditor
+                                invitationId={invitation.id}
+                                initialData={sections.protocol?.data}
+                                sectionId={sections.protocol?.id}
+                                isVisible={sections.protocol?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'footer' && (
+                            <FooterEditor
+                                invitationId={invitation.id}
+                                initialData={sections.footer?.data}
+                                sectionId={sections.footer?.id}
+                                isVisible={sections.footer?.is_visible}
+                            />
+                        )}
                     </CardContent>
                 </Card>
             </div>

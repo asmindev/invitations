@@ -31,13 +31,16 @@ interface GalleryData {
 
 interface Props {
     invitationId: number;
+    sectionId?: number;
+    isVisible?: boolean;
     initialData?: GalleryData;
 }
 
-export default function GalleryEditor({ invitationId, initialData }: Props) {
+export default function GalleryEditor({ invitationId, sectionId, isVisible = true, initialData }: Props) {
     const { data, setData, post, processing, transform } = useForm({
         title: initialData?.title || 'Portraits of Us',
         images: initialData?.images || [],
+        is_visible: isVisible,
     });
     const [newImageAlt, setNewImageAlt] = useState('');
     const [uploading, setUploading] = useState(false);
@@ -58,7 +61,7 @@ export default function GalleryEditor({ invitationId, initialData }: Props) {
                 })),
             },
             order: 2,
-            is_visible: true,
+            is_visible: data.is_visible,
         }));
         post(route('admin.invitations.sections.store', invitationId));
     };
@@ -140,6 +143,23 @@ export default function GalleryEditor({ invitationId, initialData }: Props) {
 
     return (
         <form onSubmit={submit} className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Galeri Foto</h3>
+                    <p className="text-sm text-gray-600">Kelola foto-foto untuk galeri.</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Switch 
+                        checked={data.is_visible} 
+                        onCheckedChange={(checked) => setData('is_visible', checked)}
+                        id="gallery-visible"
+                    />
+                    <Label htmlFor="gallery-visible" className="cursor-pointer">
+                        {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
+                    </Label>
+                </div>
+            </div>
+
             <div className="space-y-2">
                 <Label>Judul Galeri</Label>
                 <Input value={data.title} onChange={(e) => setData('title', e.target.value)} />

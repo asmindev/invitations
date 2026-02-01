@@ -93,10 +93,15 @@ class InvitationController extends Controller
     {
         $invitation->load('sections');
 
-        // Transform sections into associative array by type with section_data
+        // Transform sections into associative array by type with section_data and visibility
         $sections = $invitation->sections->groupBy('section_type')->map(function ($sectionGroup) {
-            // Get the first section of this type and return its section_data
-            return $sectionGroup->first()->section_data ?? [];
+            $section = $sectionGroup->first();
+            return [
+                'id' => $section->id,
+                'data' => $section->section_data ?? [],
+                'is_visible' => $section->is_visible ?? true,
+                'order' => $section->order ?? 0,
+            ];
         });
 
         return Inertia::render('admin/invitations/Edit', [

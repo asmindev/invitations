@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
@@ -20,9 +21,11 @@ interface Props {
         description?: string;
         protocols: Protocol[];
     };
+    sectionId?: number;
+    isVisible?: boolean;
 }
 
-export default function ProtocolEditor({ invitationId, initialData }: Props) {
+export default function ProtocolEditor({ invitationId, initialData, isVisible = true }: Props) {
     const defaultProtocols = [
         { icon: 'hand-wash', title: 'Cuci Tangan', description: 'Cuci tangan secara teratur' },
         { icon: 'mask', title: 'Pakai Masker', description: 'Wajib memakai masker' },
@@ -34,14 +37,15 @@ export default function ProtocolEditor({ invitationId, initialData }: Props) {
         title: initialData?.title || 'Protokol Kesehatan',
         description: initialData?.description || 'Mohon patuhi protokol kesehatan berikut demi kenyamanan bersama.',
         protocols: initialData?.protocols || defaultProtocols,
+        is_visible: isVisible,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         transform((data) => ({
-            section_data: data,
+            section_data: { title: data.title, description: data.description, protocols: data.protocols },
             order: 8,
-            is_visible: true,
+            is_visible: data.is_visible,
         }));
         put(
             route('admin.invitations.sections.update', {
@@ -77,9 +81,21 @@ export default function ProtocolEditor({ invitationId, initialData }: Props) {
 
     return (
         <form onSubmit={submit} className="space-y-6">
-            <div>
-                <h3 className="mb-4 text-lg font-semibold text-gray-800">Bagian Protokol Kesehatan</h3>
-                <p className="mb-4 text-sm text-gray-600">Atur protokol kesehatan untuk acara Anda.</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Bagian Protokol Kesehatan</h3>
+                    <p className="text-sm text-gray-600">Atur protokol kesehatan untuk acara Anda.</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Switch 
+                        checked={data.is_visible} 
+                        onCheckedChange={(checked) => setData('is_visible', checked)}
+                        id="protocol-visible"
+                    />
+                    <Label htmlFor="protocol-visible" className="cursor-pointer">
+                        {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
+                    </Label>
+                </div>
             </div>
 
             <div className="space-y-4">

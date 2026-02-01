@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import axios from 'axios';
 import { Trash2 } from 'lucide-react';
@@ -23,11 +24,14 @@ interface LoveStoryData {
 interface Props {
     invitationId: number;
     initialData?: LoveStoryData;
+    sectionId?: number;
+    isVisible?: boolean;
 }
 
-export default function LoveStoryEditor({ invitationId, initialData }: Props) {
+export default function LoveStoryEditor({ invitationId, initialData, isVisible = true }: Props) {
     const [title, setTitle] = useState(initialData?.title || 'Our Story');
     const [stories, setStories] = useState<Story[]>(initialData?.stories || [{ title: 'First Date', caption: '', image: '', imageFile: null }]);
+    const [sectionVisible, setSectionVisible] = useState(isVisible);
     const [saving, setSaving] = useState(false);
 
     const addStory = () => {
@@ -56,7 +60,7 @@ export default function LoveStoryEditor({ invitationId, initialData }: Props) {
             const formData = new FormData();
             formData.append('section_type', 'love_story');
             formData.append('order', '3');
-            formData.append('is_visible', '1');
+            formData.append('is_visible', sectionVisible ? '1' : '0');
 
             // Prepare stories data without imageFile
             const storiesData = stories.map(({ imageFile, ...story }) => story);
@@ -92,6 +96,23 @@ export default function LoveStoryEditor({ invitationId, initialData }: Props) {
 
     return (
         <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Kisah Cinta</h3>
+                    <p className="text-sm text-gray-600">Ceritakan perjalanan cinta Anda.</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Switch 
+                        checked={sectionVisible} 
+                        onCheckedChange={setSectionVisible}
+                        id="love-story-visible"
+                    />
+                    <Label htmlFor="love-story-visible" className="cursor-pointer">
+                        {sectionVisible ? 'Tampilkan' : 'Sembunyikan'}
+                    </Label>
+                </div>
+            </div>
+
             <div className="space-y-2">
                 <Label>Judul Bagian</Label>
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} />

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -13,23 +14,26 @@ interface Props {
         hashtag?: string;
         credits?: string;
     };
+    sectionId?: number;
+    isVisible?: boolean;
 }
 
-export default function FooterEditor({ invitationId, initialData }: Props) {
+export default function FooterEditor({ invitationId, initialData, isVisible = true }: Props) {
     const { data, setData, put, processing, transform } = useForm({
         closing_text:
             initialData?.closing_text || 'Terima kasih telah menjadi bagian dari hari istimewa kami. Kehadiran Anda sangat berarti bagi kami.',
         couple_names: initialData?.couple_names || '',
         hashtag: initialData?.hashtag || '',
         credits: initialData?.credits || 'Made with ❤️ by Katsudoto',
+        is_visible: isVisible,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         transform((data) => ({
-            section_data: data,
+            section_data: { closing_text: data.closing_text, couple_names: data.couple_names, hashtag: data.hashtag, credits: data.credits },
             order: 9,
-            is_visible: true,
+            is_visible: data.is_visible,
         }));
         put(
             route('admin.invitations.sections.update', {
@@ -41,9 +45,21 @@ export default function FooterEditor({ invitationId, initialData }: Props) {
 
     return (
         <form onSubmit={submit} className="space-y-6">
-            <div>
-                <h3 className="mb-4 text-lg font-semibold text-gray-800">Bagian Footer</h3>
-                <p className="mb-4 text-sm text-gray-600">Atur konten footer dan kredit.</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Bagian Footer</h3>
+                    <p className="text-sm text-gray-600">Atur konten footer dan kredit.</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Switch 
+                        checked={data.is_visible} 
+                        onCheckedChange={(checked) => setData('is_visible', checked)}
+                        id="footer-visible"
+                    />
+                    <Label htmlFor="footer-visible" className="cursor-pointer">
+                        {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
+                    </Label>
+                </div>
             </div>
 
             <div className="space-y-4">

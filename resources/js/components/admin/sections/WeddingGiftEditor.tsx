@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
@@ -22,21 +23,24 @@ interface WeddingGiftData {
 interface Props {
     invitationId: number;
     initialData?: WeddingGiftData;
+    sectionId?: number;
+    isVisible?: boolean;
 }
 
-export default function WeddingGiftEditor({ invitationId, initialData }: Props) {
+export default function WeddingGiftEditor({ invitationId, initialData, isVisible = true }: Props) {
     const { data, setData, put, processing, transform } = useForm({
         title: initialData?.title || 'Wedding Gift',
         description: initialData?.description || 'Your blessing and coming to our wedding are enough for us...',
         banks: initialData?.banks || [{ name: 'BANK BCA (014)', account_number: '', account_name: '' }],
+        is_visible: isVisible,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         transform((data) => ({
-            section_data: data,
+            section_data: { title: data.title, description: data.description, banks: data.banks },
             order: 4,
-            is_visible: true,
+            is_visible: data.is_visible,
         }));
         put(
             route('admin.invitations.sections.update', {
@@ -65,6 +69,23 @@ export default function WeddingGiftEditor({ invitationId, initialData }: Props) 
 
     return (
         <form onSubmit={submit} className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Hadiah Pernikahan</h3>
+                    <p className="text-sm text-gray-600">Atur informasi hadiah dan rekening.</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Switch 
+                        checked={data.is_visible} 
+                        onCheckedChange={(checked) => setData('is_visible', checked)}
+                        id="wedding-gift-visible"
+                    />
+                    <Label htmlFor="wedding-gift-visible" className="cursor-pointer">
+                        {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
+                    </Label>
+                </div>
+            </div>
+
             <div className="space-y-2">
                 <Label>Judul Bagian</Label>
                 <Input value={data.title} onChange={(e) => setData('title', e.target.value)} />

@@ -22,10 +22,12 @@ interface RundownData {
 
 interface Props {
     invitationId: number;
+    sectionId?: number;
+    isVisible?: boolean;
     initialData?: RundownData;
 }
 
-export default function RundownEditor({ invitationId, initialData }: Props) {
+export default function RundownEditor({ invitationId, sectionId, isVisible = true, initialData }: Props) {
     const { data, setData, put, processing, transform } = useForm({
         events: initialData?.events || [
             {
@@ -33,14 +35,15 @@ export default function RundownEditor({ invitationId, initialData }: Props) {
                 agendas: [{ time: '11:00 AM', text: 'Grand Entrance' }],
             },
         ],
+        is_visible: isVisible,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        transform((data) => ({
-            section_data: data,
+        transform((formData) => ({
+            section_data: { events: formData.events },
             order: 1,
-            is_visible: true,
+            is_visible: formData.is_visible,
         }));
         put(
             route('admin.invitations.sections.update', {
@@ -95,9 +98,21 @@ export default function RundownEditor({ invitationId, initialData }: Props) {
                     <h3 className="text-lg font-semibold text-gray-800">Susunan Acara</h3>
                     <p className="text-sm text-gray-600">Atur jadwal dan detail acara.</p>
                 </div>
-                <Button onClick={addEvent} className="bg-green-600 hover:bg-green-700">
-                    + Tambah Acara
-                </Button>
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center space-x-2">
+                        <Switch 
+                            checked={data.is_visible} 
+                            onCheckedChange={(checked) => setData('is_visible', checked)}
+                            id="rundown-visible"
+                        />
+                        <Label htmlFor="rundown-visible" className="cursor-pointer">
+                            {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
+                        </Label>
+                    </div>
+                    <Button onClick={addEvent} className="bg-green-600 hover:bg-green-700">
+                        + Tambah Acara
+                    </Button>
+                </div>
             </div>
 
             {data.events.map((event, eventIndex) => (

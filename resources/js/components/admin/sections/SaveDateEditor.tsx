@@ -10,6 +10,8 @@ import { toast } from 'sonner';
 
 interface Props {
     invitationId: number;
+    sectionId?: number;
+    isVisible?: boolean;
     initialData?: {
         title?: string;
         date: string;
@@ -24,7 +26,7 @@ interface Props {
     };
 }
 
-export default function SaveDateEditor({ invitationId, initialData }: Props) {
+export default function SaveDateEditor({ invitationId, sectionId, isVisible = true, initialData }: Props) {
     const { data, setData, put, processing, transform } = useForm({
         title: initialData?.title || 'Save The Date',
         date: initialData?.date || '',
@@ -36,6 +38,7 @@ export default function SaveDateEditor({ invitationId, initialData }: Props) {
             address: '',
             google_maps_url: '',
         },
+        is_visible: isVisible,
     });
 
     const [uploading, setUploading] = useState(false);
@@ -82,9 +85,18 @@ export default function SaveDateEditor({ invitationId, initialData }: Props) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         transform((formData) => ({
-            section_data: formData,
+            section_data: {
+                title: formData.title,
+                subtitle: formData.subtitle,
+                date: formData.date,
+                address: formData.address,
+                google_maps_link: formData.google_maps_link,
+                image_path: formData.image_path,
+                image_url: formData.image_url,
+            },
             order: 2,
-            is_visible: true,
+            is_visible: formData.is_visible,
+        }));
         }));
         put(
             route('admin.invitations.sections.update', {
@@ -96,9 +108,21 @@ export default function SaveDateEditor({ invitationId, initialData }: Props) {
 
     return (
         <form onSubmit={submit} className="space-y-6">
-            <div>
-                <h3 className="mb-4 text-lg font-semibold text-gray-800">Bagian Simpan Tanggal</h3>
-                <p className="mb-4 text-sm text-gray-600">Atur tanggal, waktu, dan lokasi pernikahan.</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Bagian Simpan Tanggal</h3>
+                    <p className="text-sm text-gray-600">Atur tanggal, waktu, dan lokasi pernikahan.</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Switch 
+                        checked={data.is_visible} 
+                        onCheckedChange={(checked) => setData('is_visible', checked)}
+                        id="save-date-visible"
+                    />
+                    <Label htmlFor="save-date-visible" className="cursor-pointer">
+                        {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
+                    </Label>
+                </div>
             </div>
 
             <div className="space-y-4 rounded-lg border bg-gray-50 p-4">
