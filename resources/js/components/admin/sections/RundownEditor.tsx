@@ -100,11 +100,7 @@ export default function RundownEditor({ invitationId, sectionId, isVisible = tru
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center space-x-2">
-                        <Switch 
-                            checked={data.is_visible} 
-                            onCheckedChange={(checked) => setData('is_visible', checked)}
-                            id="rundown-visible"
-                        />
+                        <Switch checked={data.is_visible} onCheckedChange={(checked) => setData('is_visible', checked)} id="rundown-visible" />
                         <Label htmlFor="rundown-visible" className="cursor-pointer">
                             {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
                         </Label>

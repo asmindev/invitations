@@ -87,11 +87,7 @@ export default function ProtocolEditor({ invitationId, initialData, isVisible = 
                     <p className="text-sm text-gray-600">Atur protokol kesehatan untuk acara Anda.</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Switch 
-                        checked={data.is_visible} 
-                        onCheckedChange={(checked) => setData('is_visible', checked)}
-                        id="protocol-visible"
-                    />
+                    <Switch checked={data.is_visible} onCheckedChange={(checked) => setData('is_visible', checked)} id="protocol-visible" />
                     <Label htmlFor="protocol-visible" className="cursor-pointer">
                         {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
                     </Label>

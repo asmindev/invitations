@@ -102,11 +102,7 @@ export default function LoveStoryEditor({ invitationId, initialData, isVisible =
                     <p className="text-sm text-gray-600">Ceritakan perjalanan cinta Anda.</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Switch 
-                        checked={sectionVisible} 
-                        onCheckedChange={setSectionVisible}
-                        id="love-story-visible"
-                    />
+                    <Switch checked={sectionVisible} onCheckedChange={setSectionVisible} id="love-story-visible" />
                     <Label htmlFor="love-story-visible" className="cursor-pointer">
                         {sectionVisible ? 'Tampilkan' : 'Sembunyikan'}
                     </Label>

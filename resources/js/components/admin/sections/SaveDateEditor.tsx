@@ -97,7 +97,6 @@ export default function SaveDateEditor({ invitationId, sectionId, isVisible = tr
             order: 2,
             is_visible: formData.is_visible,
         }));
-        }));
         put(
             route('admin.invitations.sections.update', {
                 invitation: invitationId,
@@ -114,11 +113,7 @@ export default function SaveDateEditor({ invitationId, sectionId, isVisible = tr
                     <p className="text-sm text-gray-600">Atur tanggal, waktu, dan lokasi pernikahan.</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Switch 
-                        checked={data.is_visible} 
-                        onCheckedChange={(checked) => setData('is_visible', checked)}
-                        id="save-date-visible"
-                    />
+                    <Switch checked={data.is_visible} onCheckedChange={(checked) => setData('is_visible', checked)} id="save-date-visible" />
                     <Label htmlFor="save-date-visible" className="cursor-pointer">
                         {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
                     </Label>

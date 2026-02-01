@@ -75,11 +75,7 @@ export default function WeddingGiftEditor({ invitationId, initialData, isVisible
                     <p className="text-sm text-gray-600">Atur informasi hadiah dan rekening.</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Switch 
-                        checked={data.is_visible} 
-                        onCheckedChange={(checked) => setData('is_visible', checked)}
-                        id="wedding-gift-visible"
-                    />
+                    <Switch checked={data.is_visible} onCheckedChange={(checked) => setData('is_visible', checked)} id="wedding-gift-visible" />
                     <Label htmlFor="wedding-gift-visible" className="cursor-pointer">
                         {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
                     </Label>

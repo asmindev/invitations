@@ -149,11 +149,7 @@ export default function GalleryEditor({ invitationId, sectionId, isVisible = tru
                     <p className="text-sm text-gray-600">Kelola foto-foto untuk galeri.</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Switch 
-                        checked={data.is_visible} 
-                        onCheckedChange={(checked) => setData('is_visible', checked)}
-                        id="gallery-visible"
-                    />
+                    <Switch checked={data.is_visible} onCheckedChange={(checked) => setData('is_visible', checked)} id="gallery-visible" />
                     <Label htmlFor="gallery-visible" className="cursor-pointer">
                         {data.is_visible ? 'Tampilkan' : 'Sembunyikan'}
                     </Label>
