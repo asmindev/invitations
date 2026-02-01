@@ -7,14 +7,11 @@ import {
     FooterSection,
     FootnoteSection,
     GallerySection,
-    InstagramFilterSection,
-    LiveStreamingSection,
     LoveStorySection,
     NotesSection,
     ProtocolSection,
     RsvpSection,
     RundownSection,
-    VideoGallerySection,
     WeddingGiftSection,
     WeddingWishSection,
 } from './StubSections';
@@ -37,43 +34,43 @@ export default function SecondaryPane({ guest, wishes, invitation, sections }: P
             <CoverSection invitation={invitation} />
 
             {/* Quote */}
-            <QuoteSection data={sections?.quote} />
+            {sections?.quote && <QuoteSection data={sections.quote} />}
 
             {/* COUPLE */}
             <CoupleSection data={sections?.couple} invitation={invitation} />
 
             {/* SAVE THE DATE */}
-            <SaveDateSection data={sections?.save_date} invitation={invitation} />
+            {sections?.save_date && <SaveDateSection data={sections.save_date} invitation={invitation} />}
 
             {/* AGENDA */}
-            <AgendaSection data={sections?.agenda} invitation={invitation} />
+            {sections?.agenda && <AgendaSection data={sections.agenda} invitation={invitation} />}
 
             {/* RUNDOWN */}
-            <RundownSection data={sections?.rundown} />
+            {sections?.rundown && <RundownSection data={sections.rundown} />}
 
             {/* Reservation */}
-            <RsvpSection data={sections?.rsvp} />
+            {sections?.rsvp && <RsvpSection data={sections.rsvp} />}
 
             {/* Gallery */}
-            <GallerySection data={sections?.gallery} />
+            {sections?.gallery && <GallerySection data={sections.gallery} />}
 
             {/* VIDEO GALLERY */}
-            <VideoGallerySection />
+            {/* <VideoGallerySection /> */}
 
             {/* Love Story */}
-            <LoveStorySection data={sections?.love_story} />
+            {sections?.love_story && <LoveStorySection data={sections.love_story} />}
 
             {/* LIVE STREAMING */}
-            <LiveStreamingSection />
+            {/* <LiveStreamingSection /> */}
 
             {/* Instagram Filter */}
-            <InstagramFilterSection />
+            {/* <InstagramFilterSection /> */}
 
             {/* WEDDING GIFT */}
-            <WeddingGiftSection data={sections?.wedding_gift} />
+            {sections?.wedding_gift && <WeddingGiftSection data={sections.wedding_gift} />}
 
             {/* Protocol */}
-            <ProtocolSection data={sections?.protocol} />
+            {sections?.protocol && <ProtocolSection data={sections.protocol} />}
 
             {/* WEDDING WISH */}
             <WeddingWishSection wishes={wishes} />
@@ -85,7 +82,7 @@ export default function SecondaryPane({ guest, wishes, invitation, sections }: P
             <FootnoteSection invitation={invitation} />
 
             {/* FOOTER */}
-            <FooterSection data={sections?.footer} />
+            {sections?.footer && <FooterSection data={sections.footer} />}
         </section>
     );
 }

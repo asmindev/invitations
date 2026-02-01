@@ -1,4 +1,5 @@
 import { AppSidebar } from '@/components/app-sidebar';
+import { ModeToggle } from '@/components/mode-toggle';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -40,7 +41,10 @@ export default function AdminLayout({ children, header }: AdminLayoutProps) {
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
-                    {header && <div className="ml-auto">{header}</div>}
+                    <div className="ml-auto flex items-center gap-2">
+                        <ModeToggle />
+                        {header}
+                    </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
             </SidebarInset>
