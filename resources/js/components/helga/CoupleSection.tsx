@@ -1,18 +1,65 @@
-export default function CoupleSection() {
+interface Couple {
+    name: string;
+    parents: string;
+    instagram?: string;
+    photo: string;
+}
+
+interface Props {
+    data?: {
+        title?: string;
+        opening_text?: string;
+        groom: Couple;
+        bride: Couple;
+    };
+    invitation?: any;
+}
+
+export default function CoupleSection({ data, invitation }: Props) {
+    const title = invitation?.couple_title || data?.title || 'The Wedding Of';
+    const openingText =
+        invitation?.couple_introduction ||
+        data?.opening_text ||
+        'بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ\n\nAssalamualaikum Warahmatullahi Wabarakatuh\n\nWith the blessing and mercy from Allah SWT, We cordially invite you to the wedding of:';
+
+    const groom = {
+        name: invitation?.groom_full_name || data?.groom?.name || 'Marcell Bramantyo',
+        parents:
+            data?.groom?.parents ||
+            (invitation?.groom_father && invitation?.groom_mother
+                ? `Putra dari Bapak ${invitation.groom_father} & Ibu ${invitation.groom_mother}`
+                : 'Putra dari Bapak Erik Cahyo & Ibu Puspita'),
+        instagram: invitation?.groom_instagram || data?.groom?.instagram || '@marcell',
+        photo:
+            invitation?.groom_photo ||
+            data?.groom?.photo ||
+            'https://img.katsudoto.id/9zwUwEzMtPWsc2Tp2tIS8-64L9AfAh5hWDRALYzu2BY/rs:auto:1080:0:1/g:no/ar:1/q:90/aHR0cHM6Ly9tZWRpYS5rYXRzdWRvdG8uaWQvbWVkaWEvcHVibGljLzcwLzE4Nzg3L2NvdXBsZS90aHVtYl9sZ18xODU5ODdfMTY5MTEzOTQyOV8xMjAwXzEyMDAuanBlZw.webp',
+    };
+
+    const bride = {
+        name: invitation?.bride_full_name || data?.bride?.name || 'Lisa Jesslyne Hadid',
+        parents:
+            data?.bride?.parents ||
+            (invitation?.bride_father && invitation?.bride_mother
+                ? `Putri dari Bapak ${invitation.bride_father} & Ibu ${invitation.bride_mother}`
+                : 'Putri dari Bapak Santoso & Ibu Angeline'),
+        instagram: invitation?.bride_instagram || data?.bride?.instagram || '@lisa',
+        photo:
+            invitation?.bride_photo ||
+            data?.bride?.photo ||
+            'https://img.katsudoto.id/EOwu2bpvfw_UYlmwF6xFgDpdb9nFdkXonzoziChcXqY/rs:auto:1080:0:1/g:no/ar:1/q:90/aHR0cHM6Ly9tZWRpYS5rYXRzdWRvdG8uaWQvbWVkaWEvcHVibGljLzcwLzE4Nzg3L2NvdXBsZS90aHVtYl9sZ18xODU5ODhfMTY5MTEzOTQ1N18xMjAwXzEyMDAuanBlZw.webp',
+    };
+
     return (
         <section className="couple-wrap">
             <div className="couple">
                 {/* Couple Head */}
                 <div className="couple-head">
                     <h1 className="couple-title" data-aos="zoom-in" data-aos-duration="1000">
-                        The Wedding Of
+                        {title}
                     </h1>
-                    <p className="couple-description" data-aos="fade-up" data-aos-duration="1000">
-                        بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ
-                        <br />
-                        <br />
-                        Assalamualaikum Warahmatullahi Wabarakatuh with the blessing and mercy from Allah SWT, We cordially invite you to the wedding
-                        of:
+                    <p className="couple-description" data-aos="fade-up" data-aos-duration="1000" style={{ whiteSpace: 'pre-line' }}>
+                        {openingText}
                     </p>
                 </div>
 
@@ -22,12 +69,7 @@ export default function CoupleSection() {
                     <div className="couple-info groom">
                         <div className="couple-preview-wrap">
                             <div className="couple-preview lightgallery" data-aos="zoom-in" data-aos-duration="1500" data-aos-once="false">
-                                <a
-                                    className="img-wrap"
-                                    href="https://img.katsudoto.id/E8dv0dwee6Q1SiDPDbwLmbVi3ZrwFCnY3Y32PFle3w0/rs:auto:2000:0:1/g:no/ar:1/q:90/aHR0cHM6Ly9tZWRpYS5rYXRzdWRvdG8uaWQvbWVkaWEvcHVibGljLzcwLzE4Nzg3L2NvdXBsZS90aHVtYl9sZ18xODU5ODdfMTY5MTEzOTQyOV8xMjAwXzEyMDAuanBlZw.webp"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <a className="img-wrap" href={groom.photo} target="_blank" rel="noopener noreferrer">
                                     <div className="ornaments-wrapper">
                                         <div className="orn-couple">
                                             <div className="image-wrap" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="800">
@@ -38,29 +80,32 @@ export default function CoupleSection() {
                                             </div>
                                         </div>
                                     </div>
-                                    <img
-                                        className="img"
-                                        src="https://img.katsudoto.id/9zwUwEzMtPWsc2Tp2tIS8-64L9AfAh5hWDRALYzu2BY/rs:auto:1080:0:1/g:no/ar:1/q:90/aHR0cHM6Ly9tZWRpYS5rYXRzdWRvdG8uaWQvbWVkaWEvcHVibGljLzcwLzE4Nzg3L2NvdXBsZS90aHVtYl9sZ18xODU5ODdfMTY5MTEzOTQyOV8xMjAwXzEyMDAuanBlZw.webp"
-                                        alt=""
-                                    />
+                                    <img className="img" src={groom.photo} alt={groom.name} />
                                 </a>
                             </div>
                         </div>
 
                         <div className="couple-details">
                             <h2 className="couple-name" data-aos="fade-up" data-aos-duration="1000">
-                                Marcell Bramantyo
+                                {groom.name}
                             </h2>
                             <p className="couple-parents" data-aos="fade-up" data-aos-duration="1000">
-                                The Daughter of Mr. Erik Cahyo & Mrs. Puspita
+                                {groom.parents}
                                 <br />
                                 <br />
                             </p>
-                            <div className="couple-link-wrap" data-aos="fade-up" data-aos-duration="1000">
-                                <a href="https://www.instagram.com/katsudoto" target="_blank" className="couple-link" rel="noopener noreferrer">
-                                    <i className="fab fa-instagram"></i> @katsudoto
-                                </a>
-                            </div>
+                            {groom.instagram && (
+                                <div className="couple-link-wrap" data-aos="fade-up" data-aos-duration="1000">
+                                    <a
+                                        href={`https://www.instagram.com/${groom.instagram.replace('@', '')}`}
+                                        target="_blank"
+                                        className="couple-link"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i className="fab fa-instagram"></i> {groom.instagram}
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -75,12 +120,7 @@ export default function CoupleSection() {
                     <div className="couple-info bride">
                         <div className="couple-preview-wrap">
                             <div className="couple-preview lightgallery" data-aos="zoom-in" data-aos-duration="1000" data-aos-once="false">
-                                <a
-                                    className="img-wrap"
-                                    href="https://img.katsudoto.id/bEMbjrGgdfxsxixGfS3hJ50fV6TDUk8mhaI67C4DAGk/rs:auto:2000:0:1/g:no/ar:1/q:90/aHR0cHM6Ly9tZWRpYS5rYXRzdWRvdG8uaWQvbWVkaWEvcHVibGljLzcwLzE4Nzg3L2NvdXBsZS90aHVtYl9sZ18xODU5ODhfMTY5MTEzOTQ1N18xMjAwXzEyMDAuanBlZw.webp"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <a className="img-wrap" href={bride.photo} target="_blank" rel="noopener noreferrer">
                                     <div className="ornaments-wrapper">
                                         <div className="orn-couple">
                                             <div className="image-wrap" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="800">
@@ -91,29 +131,32 @@ export default function CoupleSection() {
                                             </div>
                                         </div>
                                     </div>
-                                    <img
-                                        className="img"
-                                        src="https://img.katsudoto.id/EOwu2bpvfw_UYlmwF6xFgDpdb9nFdkXonzoziChcXqY/rs:auto:1080:0:1/g:no/ar:1/q:90/aHR0cHM6Ly9tZWRpYS5rYXRzdWRvdG8uaWQvbWVkaWEvcHVibGljLzcwLzE4Nzg3L2NvdXBsZS90aHVtYl9sZ18xODU5ODhfMTY5MTEzOTQ1N18xMjAwXzEyMDAuanBlZw.webp"
-                                        alt=""
-                                    />
+                                    <img className="img" src={bride.photo} alt={bride.name} />
                                 </a>
                             </div>
                         </div>
 
                         <div className="couple-details">
                             <h2 className="couple-name" data-aos="fade-up" data-aos-duration="1000">
-                                Lisa Jesslyne Hadid
+                                {bride.name}
                             </h2>
                             <p className="couple-parents" data-aos="fade-up" data-aos-duration="1000">
-                                The Son of Mr. Santoso & Mrs. Angeline
+                                {bride.parents}
                                 <br />
                                 <br />
                             </p>
-                            <div className="couple-link-wrap" data-aos="fade-up" data-aos-duration="1000">
-                                <a href="https://www.instagram.com/katsudoto" target="_blank" className="couple-link" rel="noopener noreferrer">
-                                    <i className="fab fa-instagram"></i> @katsudoto
-                                </a>
-                            </div>
+                            {bride.instagram && (
+                                <div className="couple-link-wrap" data-aos="fade-up" data-aos-duration="1000">
+                                    <a
+                                        href={`https://www.instagram.com/${bride.instagram.replace('@', '')}`}
+                                        target="_blank"
+                                        className="couple-link"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i className="fab fa-instagram"></i> {bride.instagram}
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { Heart, LayoutDashboard, MessageCircle, UserCheck, Users } from 'lucide-react';
+import { Heart, LayoutDashboard, Mail, MessageCircle, UserCheck, Users } from 'lucide-react';
 import * as React from 'react';
 
 import {
@@ -19,6 +19,11 @@ const data = {
             title: 'Dashboard',
             url: route('admin.dashboard'),
             icon: LayoutDashboard,
+        },
+        {
+            title: 'Invitations',
+            url: route('admin.invitations.index'),
+            icon: Mail,
         },
         {
             title: 'Guests',

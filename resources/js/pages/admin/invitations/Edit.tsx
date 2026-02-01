@@ -1,7 +1,17 @@
+import FooterEditor from '@/components/admin/sections/FooterEditor';
 import GalleryEditor from '@/components/admin/sections/GalleryEditor';
 import LoveStoryEditor from '@/components/admin/sections/LoveStoryEditor';
+import ProtocolEditor from '@/components/admin/sections/ProtocolEditor';
+import QuoteEditor from '@/components/admin/sections/QuoteEditor';
 import RundownEditor from '@/components/admin/sections/RundownEditor';
+import SaveDateEditor from '@/components/admin/sections/SaveDateEditor';
 import WeddingGiftEditor from '@/components/admin/sections/WeddingGiftEditor';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
@@ -16,11 +26,20 @@ interface Invitation {
     bride_full_name?: string;
     bride_father?: string;
     bride_mother?: string;
+    couple_title?: string;
+    couple_introduction?: string;
+    groom_instagram?: string;
+    groom_photo?: string;
+    bride_instagram?: string;
+    bride_photo?: string;
+    cover_photo?: string;
+    primary_pane_photo?: string;
     wedding_date: string;
     wedding_time?: string;
     hashtag?: string;
     opening_text?: string;
     closing_text?: string;
+    audio_url?: string;
     is_active: boolean;
 }
 
@@ -32,7 +51,8 @@ interface Props {
 export default function Edit({ invitation, sections }: Props) {
     const [activeTab, setActiveTab] = useState('basic');
 
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
+        _method: 'put',
         slug: invitation.slug || '',
         groom_name: invitation.groom_name || '',
         groom_full_name: invitation.groom_full_name || '',
@@ -42,178 +62,286 @@ export default function Edit({ invitation, sections }: Props) {
         bride_full_name: invitation.bride_full_name || '',
         bride_father: invitation.bride_father || '',
         bride_mother: invitation.bride_mother || '',
-        wedding_date: invitation.wedding_date || '',
-        wedding_time: invitation.wedding_time || '',
+        groom_instagram: invitation.groom_instagram || '',
+        groom_photo: null as File | null,
+        bride_instagram: invitation.bride_instagram || '',
+        bride_photo: null as File | null,
+        cover_photo: null as File | null,
+        primary_pane_photo: null as File | null,
+        couple_title: invitation.couple_title || '',
+        couple_introduction: invitation.couple_introduction || '',
+        wedding_date: invitation.wedding_date?.toString().substring(0, 10) || '',
+        wedding_time: invitation.wedding_time?.substring(0, 5) || '',
         hashtag: invitation.hashtag || '',
         opening_text: invitation.opening_text || '',
         closing_text: invitation.closing_text || '',
+        audio_url: invitation.audio_url || '',
         is_active: invitation.is_active,
     });
 
     const submitBasicInfo: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('admin.invitations.update', invitation.id));
+        post(route('admin.invitations.update', invitation.id));
     };
 
     const tabs = [
-        { key: 'basic', label: 'Basic Info' },
-        { key: 'rundown', label: 'Rundown' },
-        { key: 'gallery', label: 'Gallery' },
-        { key: 'love_story', label: 'Love Story' },
-        { key: 'wedding_gift', label: 'Wedding Gift' },
-        { key: 'live_streaming', label: 'Live Streaming' },
-        { key: 'instagram_filter', label: 'Instagram Filter' },
-        { key: 'protocol', label: 'Protocol' },
+        { key: 'basic', label: 'Info Dasar' },
+
+        { key: 'quote', label: 'Kutipan' },
+        { key: 'save_date', label: 'Simpan Tanggal' },
+        { key: 'rundown', label: 'Susunan Acara' },
+        { key: 'gallery', label: 'Galeri' },
+        { key: 'love_story', label: 'Kisah Cinta' },
+        { key: 'wedding_gift', label: 'Kado Pernikahan' },
+        { key: 'protocol', label: 'Protokol' },
+        { key: 'footer', label: 'Footer' },
     ];
 
     return (
-        <>
+        <AdminLayout>
             <Head title={`Edit: ${invitation.groom_name} & ${invitation.bride_name}`} />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <h2 className="mb-6 text-2xl font-semibold text-gray-800">
-                                Edit: {invitation.groom_name} & {invitation.bride_name}
-                            </h2>
-
-                            {/* Tabs */}
-                            <div className="mb-6 border-b border-gray-200">
-                                <nav className="-mb-px flex space-x-4 overflow-x-auto">
-                                    {tabs.map((tab) => (
-                                        <button
-                                            key={tab.key}
-                                            onClick={() => setActiveTab(tab.key)}
-                                            className={`border-b-2 px-4 py-4 text-sm font-medium whitespace-nowrap ${
-                                                activeTab === tab.key
-                                                    ? 'border-blue-500 text-blue-600'
-                                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                                            }`}
-                                        >
-                                            {tab.label}
-                                        </button>
-                                    ))}
-                                </nav>
-                            </div>
-
-                            {/* Tab Content */}
-                            {activeTab === 'basic' && (
-                                <form onSubmit={submitBasicInfo} className="space-y-6">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="mb-2 block text-sm font-medium text-gray-700">Groom Name *</label>
-                                            <input
-                                                type="text"
-                                                value={data.groom_name}
-                                                onChange={(e) => setData('groom_name', e.target.value)}
-                                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="mb-2 block text-sm font-medium text-gray-700">Bride Name *</label>
-                                            <input
-                                                type="text"
-                                                value={data.bride_name}
-                                                onChange={(e) => setData('bride_name', e.target.value)}
-                                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="mb-2 block text-sm font-medium text-gray-700">Wedding Date *</label>
-                                            <input
-                                                type="date"
-                                                value={data.wedding_date}
-                                                onChange={(e) => setData('wedding_date', e.target.value)}
-                                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="mb-2 block text-sm font-medium text-gray-700">Wedding Time</label>
-                                            <input
-                                                type="time"
-                                                value={data.wedding_time}
-                                                onChange={(e) => setData('wedding_time', e.target.value)}
-                                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="mb-2 block text-sm font-medium text-gray-700">URL Slug</label>
-                                            <input
-                                                type="text"
-                                                value={data.slug}
-                                                onChange={(e) => setData('slug', e.target.value)}
-                                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="mb-2 block text-sm font-medium text-gray-700">Hashtag</label>
-                                            <input
-                                                type="text"
-                                                value={data.hashtag}
-                                                onChange={(e) => setData('hashtag', e.target.value)}
-                                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={data.is_active}
-                                            onChange={(e) => setData('is_active', e.target.checked)}
-                                            className="h-4 w-4 text-blue-600"
-                                        />
-                                        <label className="ml-2 text-sm text-gray-700">Active</label>
-                                    </div>
-
-                                    <div className="flex justify-end">
-                                        <button
-                                            type="submit"
-                                            disabled={processing}
-                                            className="rounded-md bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
-                                        >
-                                            {processing ? 'Saving...' : 'Save Changes'}
-                                        </button>
-                                    </div>
-                                </form>
-                            )}
-
-                            {activeTab === 'rundown' && (
-                                <RundownEditor invitationId={invitation.id} initialData={sections.rundown?.[0]?.section_data} />
-                            )}
-
-                            {activeTab === 'gallery' && (
-                                <GalleryEditor invitationId={invitation.id} initialData={sections.gallery?.[0]?.section_data} />
-                            )}
-
-                            {activeTab === 'love_story' && (
-                                <LoveStoryEditor invitationId={invitation.id} initialData={sections.love_story?.[0]?.section_data} />
-                            )}
-
-                            {activeTab === 'wedding_gift' && (
-                                <WeddingGiftEditor invitationId={invitation.id} initialData={sections.wedding_gift?.[0]?.section_data} />
-                            )}
-
-                            {activeTab === 'live_streaming' && (
-                                <div className="space-y-4">
-                                    <p className="text-gray-600">Configure live streaming URL</p>
-                                    {/* Simple form for streaming URL */}
-                                </div>
-                            )}
-                        </div>
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight">Edit Undangan</h1>
+                        <p className="text-muted-foreground">
+                            {invitation.groom_name} & {invitation.bride_name}
+                        </p>
                     </div>
                 </div>
+
+                <Card>
+                    <CardHeader className="border-b p-0">
+                        {/* Custom Tabs (simulating Shadcn Tabs since component is missing) */}
+                        <div className="flex items-center overflow-x-auto px-4 pt-2">
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab.key}
+                                    onClick={() => setActiveTab(tab.key)}
+                                    className={`relative px-4 py-3 text-sm font-medium transition-colors hover:text-primary ${
+                                        activeTab === tab.key ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'
+                                    }`}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                        {activeTab === 'basic' && (
+                            <form onSubmit={submitBasicInfo} className="space-y-6">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-4 rounded-lg border p-4">
+                                        <h3 className="font-semibold text-gray-700">Mempelai Pria</h3>
+                                        <div className="space-y-2">
+                                            <Label>Nama Panggilan *</Label>
+                                            <Input value={data.groom_name} onChange={(e) => setData('groom_name', e.target.value)} required />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Nama Lengkap</Label>
+                                            <Input value={data.groom_full_name} onChange={(e) => setData('groom_full_name', e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Nama Ayah</Label>
+                                            <Input value={data.groom_father} onChange={(e) => setData('groom_father', e.target.value)} />
+                                        </div>
+                                        <div className="range-y-2">
+                                            <Label>Nama Ibu</Label>
+                                            <Input value={data.groom_mother} onChange={(e) => setData('groom_mother', e.target.value)} />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label>Instagram (opsional)</Label>
+                                                <Input
+                                                    value={data.groom_instagram}
+                                                    onChange={(e) => setData('groom_instagram', e.target.value)}
+                                                    placeholder="@username"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Foto Mempelai Pria</Label>
+                                                {invitation.groom_photo && (
+                                                    <div className="mb-2">
+                                                        <img
+                                                            src={invitation.groom_photo}
+                                                            alt="Groom"
+                                                            className="h-32 w-32 rounded-lg border object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+                                                <Input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => setData('groom_photo', e.target.files ? e.target.files[0] : null)}
+                                                />
+                                                <p className="text-xs text-muted-foreground">Format: JPG, PNG. Max: 2MB.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-4 rounded-lg border p-4">
+                                        <h3 className="font-semibold text-gray-700">Mempelai Wanita</h3>
+                                        <div className="space-y-2">
+                                            <Label>Nama Panggilan *</Label>
+                                            <Input value={data.bride_name} onChange={(e) => setData('bride_name', e.target.value)} required />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Nama Lengkap</Label>
+                                            <Input value={data.bride_full_name} onChange={(e) => setData('bride_full_name', e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Nama Ayah</Label>
+                                            <Input value={data.bride_father} onChange={(e) => setData('bride_father', e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Nama Ibu</Label>
+                                            <Input value={data.bride_mother} onChange={(e) => setData('bride_mother', e.target.value)} />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label>Instagram (opsional)</Label>
+                                                <Input
+                                                    value={data.bride_instagram}
+                                                    onChange={(e) => setData('bride_instagram', e.target.value)}
+                                                    placeholder="@username"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Foto Mempelai Wanita</Label>
+                                                {invitation.bride_photo && (
+                                                    <div className="mb-2">
+                                                        <img
+                                                            src={invitation.bride_photo}
+                                                            alt="Bride"
+                                                            className="h-32 w-32 rounded-lg border object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+                                                <Input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => setData('bride_photo', e.target.files ? e.target.files[0] : null)}
+                                                />
+                                                <p className="text-xs text-muted-foreground">Format: JPG, PNG. Max: 2MB.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-4 rounded-lg border p-4">
+                                        <h3 className="font-semibold text-gray-700">Foto Cover (Atas)</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            Foto yang muncul di bagian cover atas undangan (desktop & mobile)
+                                        </p>
+                                        {invitation.cover_photo && (
+                                            <div className="mb-2">
+                                                <img
+                                                    src={invitation.cover_photo}
+                                                    alt="Cover Photo"
+                                                    className="h-48 w-full rounded-lg border object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="space-y-2">
+                                            <Label>Upload Foto Cover</Label>
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => setData('cover_photo', e.target.files ? e.target.files[0] : null)}
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                Format: JPG, PNG. Max: 2MB. Foto yang sama akan digunakan untuk desktop dan mobile.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-4 rounded-lg border p-4">
+                                        <h3 className="font-semibold text-gray-700">Foto Primary Pane (Sidebar)</h3>
+                                        <p className="text-sm text-muted-foreground">Foto yang muncul di sidebar kiri (desktop & mobile)</p>
+                                        {invitation.primary_pane_photo && (
+                                            <div className="mb-2">
+                                                <img
+                                                    src={invitation.primary_pane_photo}
+                                                    alt="Primary Pane Photo"
+                                                    className="h-48 w-full rounded-lg border object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="space-y-2">
+                                            <Label>Upload Foto Primary Pane</Label>
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => setData('primary_pane_photo', e.target.files ? e.target.files[0] : null)}
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                Format: JPG, PNG. Max: 2MB. Foto yang sama akan digunakan untuk desktop dan mobile.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label>Tanggal Pernikahan *</Label>
+                                        <Input
+                                            type="date"
+                                            value={data.wedding_date}
+                                            onChange={(e) => setData('wedding_date', e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Waktu Pernikahan</Label>
+                                        <Input type="time" value={data.wedding_time} onChange={(e) => setData('wedding_time', e.target.value)} />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label>Slug URL</Label>
+                                        <Input value={data.slug} onChange={(e) => setData('slug', e.target.value)} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Tagar</Label>
+                                        <Input value={data.hashtag} onChange={(e) => setData('hashtag', e.target.value)} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>URL Musik (Audio)</Label>
+                                        <Input
+                                            value={data.audio_url}
+                                            onChange={(e) => setData('audio_url', e.target.value)}
+                                            placeholder="https://..."
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <Switch checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked)} />
+                                    <Label>Aktif</Label>
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <Button type="submit" disabled={processing}>
+                                        {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                                    </Button>
+                                </div>
+                            </form>
+                        )}
+
+                        {activeTab === 'quote' && <QuoteEditor invitationId={invitation.id} initialData={sections.quote} />}
+                        {activeTab === 'save_date' && <SaveDateEditor invitationId={invitation.id} initialData={sections.save_date} />}
+                        {activeTab === 'rundown' && <RundownEditor invitationId={invitation.id} initialData={sections.rundown} />}
+                        {activeTab === 'gallery' && <GalleryEditor invitationId={invitation.id} initialData={sections.gallery} />}
+                        {activeTab === 'love_story' && <LoveStoryEditor invitationId={invitation.id} initialData={sections.love_story} />}
+                        {activeTab === 'wedding_gift' && <WeddingGiftEditor invitationId={invitation.id} initialData={sections.wedding_gift} />}
+                        {activeTab === 'protocol' && <ProtocolEditor invitationId={invitation.id} initialData={sections.protocol} />}
+                        {activeTab === 'footer' && <FooterEditor invitationId={invitation.id} initialData={sections.footer} />}
+                    </CardContent>
+                </Card>
             </div>
-        </>
+        </AdminLayout>
     );
 }

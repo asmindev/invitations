@@ -6,8 +6,12 @@ interface Invitation {
     slug: string;
     groom_name: string;
     groom_full_name?: string;
+    groom_photo?: string;
     bride_name: string;
     bride_full_name?: string;
+    bride_photo?: string;
+    cover_photo?: string;
+    primary_pane_photo?: string;
     wedding_date: string;
     wedding_time?: string;
     hashtag?: string;
@@ -36,7 +40,7 @@ export default function HelgaTemplate({ guest, wishes, invitation, sections }: P
             {/* Side to Side Layout */}
             <section className="kat-page__side-to-side">
                 {/* Primary Pane - Left Side (Desktop) */}
-                <PrimaryPane invitation={invitation} />
+                <PrimaryPane invitation={invitation} guest={guest} />
 
                 {/* Secondary Pane - Right Side (Desktop) / Main Content (Mobile) */}
                 <SecondaryPane guest={guest} wishes={wishes} invitation={invitation} sections={sections} />

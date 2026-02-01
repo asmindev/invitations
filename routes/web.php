@@ -40,6 +40,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/invitations/{invitation}/sections', [\App\Http\Controllers\Admin\InvitationSectionController::class, 'store'])->name('invitations.sections.store');
     Route::put('/invitations/{invitation}/sections/{section}', [\App\Http\Controllers\Admin\InvitationSectionController::class, 'update'])->name('invitations.sections.update');
     Route::delete('/invitations/{invitation}/sections/{section}', [\App\Http\Controllers\Admin\InvitationSectionController::class, 'destroy'])->name('invitations.sections.destroy');
+
+    // Gallery & Section image uploads
+    Route::post('/invitations/{invitation}/gallery/upload', [\App\Http\Controllers\Admin\MediaController::class, 'upload'])->name('invitations.gallery.upload');
+    Route::delete('/invitations/{invitation}/gallery/delete', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('invitations.gallery.destroy');
 });
 
 require __DIR__.'/auth.php';

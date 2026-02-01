@@ -16,15 +16,31 @@ class InvitationSectionController extends Controller
     {
         $validated = $request->validate([
             'section_type' => 'required|string',
-            'section_data' => 'required|array',
+            'section_data' => 'sometimes|array',
             'order' => 'integer',
             'is_visible' => 'boolean',
         ]);
 
+        // Handle file uploads for love_story section
+        $sectionData = $validated['section_data'] ?? [];
+
+        if ($validated['section_type'] === 'love_story' && $request->hasFile('story_images')) {
+            $storyImages = $request->file('story_images');
+
+            foreach ($storyImages as $index => $image) {
+                if ($image) {
+                    $path = $image->store('photos/stories', 'public');
+                    if (isset($sectionData['stories'][$index])) {
+                        $sectionData['stories'][$index]['image'] = $path;
+                    }
+                }
+            }
+        }
+
         $section = $invitation->sections()->updateOrCreate(
             ['section_type' => $validated['section_type']],
             [
-                'section_data' => $validated['section_data'],
+                'section_data' => $sectionData,
                 'order' => $validated['order'] ?? 0,
                 'is_visible' => $validated['is_visible'] ?? true,
             ]
@@ -37,9 +53,9 @@ class InvitationSectionController extends Controller
     }
 
     /**
-     * Update existing section
+     * Update existing section by type
      */
-    public function update(Request $request, Invitation $invitation, InvitationSection $section)
+    public function update(Request $request, Invitation $invitation, string $type)
     {
         $validated = $request->validate([
             'section_data' => 'sometimes|array',
@@ -47,12 +63,22 @@ class InvitationSectionController extends Controller
             'is_visible' => 'sometimes|boolean',
         ]);
 
-        $section->update($validated);
+        // Extract section_data from request if it exists
+        $sectionData = $request->input('section_data', $request->all());
 
-        return response()->json([
-            'success' => true,
-            'section' => $section,
-        ]);
+        // Find or create section by type
+        $section = $invitation->sections()->updateOrCreate(
+            ['section_type' => $type],
+            [
+                'section_data' => $sectionData,
+                'order' => $validated['order'] ?? 0,
+                'is_visible' => $validated['is_visible'] ?? true,
+            ]
+        );
+
+        return redirect()
+            ->route('admin.invitations.edit', $invitation)
+            ->with('success', ucfirst(str_replace('_', ' ', $type)).' section updated successfully!');
     }
 
     /**

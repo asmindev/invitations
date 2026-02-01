@@ -1,6 +1,11 @@
 import React from 'react';
 
-export default function TopCover() {
+interface Props {
+    invitation?: any;
+    guest?: any;
+}
+
+export default function TopCover({ invitation, guest }: Props) {
     const handleOpenInvitation = () => {
         // This function will be called when "Open Invitation" is clicked
         // Original: startTheJourney()
@@ -11,6 +16,9 @@ export default function TopCover() {
             }
         }
     };
+
+    const coupleNames = invitation ? `${invitation.groom_name} & ${invitation.bride_name}` : 'Marcell & Lisa';
+    const guestName = guest ? guest.name : 'Tamu Undangan';
 
     return (
         <section className="top-cover">
@@ -37,7 +45,7 @@ export default function TopCover() {
                             <img src="https://katsudoto.id/media/template/exclusive/helga/original/orn-flower-7.png" alt="" />
                         </div>
                     </div>
-                    <div className="flower-right-1">
+                    <div className="flower-left-1">
                         <div className="image-wrap" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">
                             <img src="https://katsudoto.id/media/template/exclusive/helga/original/orn-flower-12.png" alt="" />
                         </div>
@@ -54,7 +62,7 @@ export default function TopCover() {
                     <div className="details">
                         <div className="logo-wrap" data-aos="zoom-out" data-aos-duration="1200">
                             <h1 className="title-cover" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="300">
-                                Marcell & Lisa
+                                {coupleNames}
                             </h1>
                         </div>
                     </div>
@@ -75,15 +83,15 @@ export default function TopCover() {
                     {/* Bottom Item */}
                     <div className="bottom-item">
                         <p data-aos="fade-up" data-aos-duration="1200" data-aos-delay="1000">
-                            Hai
+                            Kepada Yth.
                             <br />
-                            Chindy & Partner
+                            <strong>{guestName}</strong>
                         </p>
 
                         <div className="btn-open" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="1200">
-                            <a href="javascript:;" onClick={handleOpenInvitation} className="link" id="startToExplore">
-                                Open Invitation
-                            </a>
+                            <button type="button" onClick={handleOpenInvitation} className="link" id="startToExplore">
+                                Buka Undangan
+                            </button>
                         </div>
                     </div>
                 </div>

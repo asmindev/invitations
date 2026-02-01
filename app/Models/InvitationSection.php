@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class InvitationSection extends Model
 {
@@ -21,6 +22,39 @@ class InvitationSection extends Model
         'section_data' => 'array',
         'is_visible' => 'boolean',
     ];
+
+    /**
+     * Accessor to transform gallery image paths to full URLs
+     */
+    protected function getSectionDataAttribute($value)
+    {
+        $data = is_string($value) ? json_decode($value, true) : $value;
+
+        if (!$data) {
+            return $data;
+        }
+
+        // Transform gallery image paths to full URLs
+        if ($this->section_type === self::TYPE_GALLERY && isset($data['images'])) {
+            $data['images'] = array_map(function ($image) {
+                if (isset($image['path']) && !str_starts_with($image['path'], 'http')) {
+                    $image['url'] = Storage::disk('public')->url($image['path']);
+                } elseif (isset($image['url']) && !str_starts_with($image['url'], 'http')) {
+                    $image['url'] = Storage::disk('public')->url($image['url']);
+                }
+                return $image;
+            }, $data['images']);
+        }
+
+        // Transform save_date image path to full URL
+        if ($this->section_type === self::TYPE_SAVE_DATE && isset($data['image_path'])) {
+            $data['image_url'] = Storage::disk('public')->url($data['image_path']);
+        } elseif ($this->section_type === self::TYPE_SAVE_DATE && isset($data['image_url']) && !str_starts_with($data['image_url'], 'http')) {
+            $data['image_url'] = Storage::disk('public')->url($data['image_url']);
+        }
+
+        return $data;
+    }
 
     /**
      * Section type constants
@@ -41,6 +75,7 @@ class InvitationSection extends Model
     const TYPE_WEDDING_WISH = 'wedding_wish';
     const TYPE_NOTES = 'notes';
     const TYPE_FOOTNOTE = 'footnote';
+    const TYPE_FOOTER = 'footer';
 
     /**
      * Get the invitation that owns this section

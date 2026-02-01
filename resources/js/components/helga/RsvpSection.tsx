@@ -1,6 +1,14 @@
+import { router } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function RsvpSection() {
+interface Props {
+    data?: {
+        title?: string;
+        description?: string;
+    };
+}
+
+export default function RsvpSection({ data }: Props) {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -9,10 +17,28 @@ export default function RsvpSection() {
         message: '',
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const title = data?.title || 'RSVP';
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('RSVP Data:', formData);
-        // Handle form submission
+        setIsSubmitting(true);
+
+        router.post('/rsvp', formData, {
+            onSuccess: () => {
+                setFormData({
+                    name: '',
+                    email: '',
+                    attendance: '',
+                    guests: 1,
+                    message: '',
+                });
+            },
+            onFinish: () => {
+                setIsSubmitting(false);
+            },
+        });
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -25,7 +51,7 @@ export default function RsvpSection() {
             <div className="rsvp-inner">
                 <div className="rsvp-head">
                     <h1 className="rsvp-title" data-aos="zoom-in" data-aos-duration="1500">
-                        RSVP
+                        {title}
                     </h1>
                 </div>
 
@@ -88,8 +114,8 @@ export default function RsvpSection() {
                         </div>
 
                         <div className="submit-wrap" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
-                            <button type="submit" className="submit-button">
-                                Submit RSVP
+                            <button type="submit" className="submit-button" disabled={isSubmitting}>
+                                {isSubmitting ? 'Mengirim...' : 'Submit RSVP'}
                             </button>
                         </div>
                     </form>

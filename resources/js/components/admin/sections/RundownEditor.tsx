@@ -1,5 +1,10 @@
-import axios from 'axios';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useForm } from '@inertiajs/react';
+import { Trash2 } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 interface Agenda {
     time: string;
@@ -21,151 +26,143 @@ interface Props {
 }
 
 export default function RundownEditor({ invitationId, initialData }: Props) {
-    const [events, setEvents] = useState<RundownEvent[]>(
-        initialData?.events || [
+    const { data, setData, put, processing, transform } = useForm({
+        events: initialData?.events || [
             {
                 title: 'Resepsi',
                 agendas: [{ time: '11:00 AM', text: 'Grand Entrance' }],
             },
         ],
-    );
-    const [saving, setSaving] = useState(false);
+    });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        transform((data) => ({
+            section_data: data,
+            order: 1,
+            is_visible: true,
+        }));
+        put(
+            route('admin.invitations.sections.update', {
+                invitation: invitationId,
+                section: 'rundown',
+            }),
+        );
+    };
 
     const addEvent = () => {
-        setEvents([...events, { title: '', agendas: [] }]);
+        setData('events', [...data.events, { title: '', agendas: [] }]);
     };
 
     const removeEvent = (eventIndex: number) => {
-        setEvents(events.filter((_, i) => i !== eventIndex));
+        setData(
+            'events',
+            data.events.filter((_, i) => i !== eventIndex),
+        );
     };
 
     const updateEvent = (eventIndex: number, field: string, value: string) => {
-        const updated = [...events];
+        const updated = [...data.events];
         updated[eventIndex] = { ...updated[eventIndex], [field]: value };
-        setEvents(updated);
+        setData('events', updated);
     };
 
     const addAgenda = (eventIndex: number) => {
-        const updated = [...events];
+        const updated = [...data.events];
         updated[eventIndex].agendas.push({ time: '', text: '' });
-        setEvents(updated);
+        setData('events', updated);
     };
 
     const removeAgenda = (eventIndex: number, agendaIndex: number) => {
-        const updated = [...events];
+        const updated = [...data.events];
         updated[eventIndex].agendas = updated[eventIndex].agendas.filter((_, i) => i !== agendaIndex);
-        setEvents(updated);
+        setData('events', updated);
     };
 
     const updateAgenda = (eventIndex: number, agendaIndex: number, field: string, value: string) => {
-        const updated = [...events];
+        const updated = [...data.events];
         updated[eventIndex].agendas[agendaIndex] = {
             ...updated[eventIndex].agendas[agendaIndex],
             [field]: value,
         };
-        setEvents(updated);
-    };
-
-    const handleSave = async () => {
-        setSaving(true);
-        try {
-            await axios.post(route('admin.invitations.sections.store', invitationId), {
-                section_type: 'rundown',
-                section_data: { events },
-                order: 1,
-                is_visible: true,
-            });
-            alert('Rundown saved successfully!');
-        } catch (error) {
-            console.error('Error saving rundown:', error);
-            alert('Error saving rundown');
-        } finally {
-            setSaving(false);
-        }
+        setData('events', updated);
     };
 
     return (
-        <div className="space-y-6">
+        <form onSubmit={submit} className="space-y-6">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">Rundown Events</h3>
-                <button type="button" onClick={addEvent} className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700">
-                    + Add Event
-                </button>
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Susunan Acara</h3>
+                    <p className="text-sm text-gray-600">Atur jadwal dan detail acara.</p>
+                </div>
+                <Button onClick={addEvent} className="bg-green-600 hover:bg-green-700">
+                    + Tambah Acara
+                </Button>
             </div>
 
-            {events.map((event, eventIndex) => (
-                <div key={eventIndex} className="space-y-4 rounded-lg border border-gray-200 p-4">
-                    <div className="flex items-start justify-between">
-                        <div className="mr-4 flex-1">
-                            <label className="mb-2 block text-sm font-medium text-gray-700">Event Title</label>
-                            <input
-                                type="text"
+            {data.events.map((event, eventIndex) => (
+                <Card key={eventIndex}>
+                    <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                        <div className="flex-1">
+                            <Label>Nama Acara</Label>
+                            <Input
                                 value={event.title}
                                 onChange={(e) => updateEvent(eventIndex, 'title', e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                placeholder="e.g., Resepsi"
+                                placeholder="Contoh: Resepsi"
+                                className="mt-1"
                             />
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => removeEvent(eventIndex)}
-                            className="rounded-md bg-red-500 px-3 py-2 text-white hover:bg-red-600"
-                        >
-                            Remove Event
-                        </button>
-                    </div>
-
-                    <div className="ml-4">
-                        <div className="mb-3 flex items-center justify-between">
-                            <h4 className="text-sm font-medium text-gray-700">Agendas</h4>
-                            <button
-                                type="button"
-                                onClick={() => addAgenda(eventIndex)}
-                                className="rounded-md bg-blue-500 px-3 py-1 text-sm text-white hover:bg-blue-600"
-                            >
-                                + Add Agenda
-                            </button>
-                        </div>
-
-                        {event.agendas.map((agenda, agendaIndex) => (
-                            <div key={agendaIndex} className="mb-2 grid grid-cols-3 gap-3">
-                                <input
-                                    type="text"
-                                    value={agenda.time}
-                                    onChange={(e) => updateAgenda(eventIndex, agendaIndex, 'time', e.target.value)}
-                                    className="rounded-md border border-gray-300 px-3 py-2"
-                                    placeholder="11:00 AM"
-                                />
-                                <input
-                                    type="text"
-                                    value={agenda.text}
-                                    onChange={(e) => updateAgenda(eventIndex, agendaIndex, 'text', e.target.value)}
-                                    className="rounded-md border border-gray-300 px-3 py-2"
-                                    placeholder="Grand Entrance"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => removeAgenda(eventIndex, agendaIndex)}
-                                    className="rounded-md bg-red-400 px-3 py-2 text-white hover:bg-red-500"
-                                >
-                                    Remove
-                                </button>
+                        <Button variant="destructive" size="icon" onClick={() => removeEvent(eventIndex)} title="Hapus Acara" className="mt-6">
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h4 className="text-sm font-medium">Daftar Agenda</h4>
+                                <Button variant="outline" size="sm" onClick={() => addAgenda(eventIndex)}>
+                                    + Tambah Agenda
+                                </Button>
                             </div>
-                        ))}
-                    </div>
-                </div>
+
+                            {event.agendas.map((agenda, agendaIndex) => (
+                                <div key={agendaIndex} className="flex items-end gap-3">
+                                    <div className="w-1/3">
+                                        <Label className="text-xs">Waktu</Label>
+                                        <Input
+                                            value={agenda.time}
+                                            onChange={(e) => updateAgenda(eventIndex, agendaIndex, 'time', e.target.value)}
+                                            placeholder="11:00"
+                                        />
+                                    </div>
+                                    <div className="flex-1">
+                                        <Label className="text-xs">Kegiatan</Label>
+                                        <Input
+                                            value={agenda.text}
+                                            onChange={(e) => updateAgenda(eventIndex, agendaIndex, 'text', e.target.value)}
+                                            placeholder="Kegiatan..."
+                                        />
+                                    </div>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => removeAgenda(eventIndex, agendaIndex)}
+                                        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
             ))}
 
             <div className="flex justify-end">
-                <button
-                    type="button"
-                    onClick={handleSave}
-                    disabled={saving}
-                    className="rounded-md bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
-                >
-                    {saving ? 'Saving...' : 'Save Rundown'}
-                </button>
+                <Button type="submit" disabled={processing}>
+                    {processing ? 'Menyimpan...' : 'Simpan Susunan Acara'}
+                </Button>
             </div>
-        </div>
+        </form>
     );
 }

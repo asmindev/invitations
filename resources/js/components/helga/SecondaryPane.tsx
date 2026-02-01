@@ -31,28 +31,28 @@ export default function SecondaryPane({ guest, wishes, invitation, sections }: P
     return (
         <section className="secondary-pane">
             {/* TOP COVER */}
-            <TopCover />
+            <TopCover invitation={invitation} guest={guest} />
 
             {/* COVER */}
-            <CoverSection />
+            <CoverSection invitation={invitation} />
 
             {/* Quote */}
-            <QuoteSection />
+            <QuoteSection data={sections?.quote} />
 
             {/* COUPLE */}
-            <CoupleSection />
+            <CoupleSection data={sections?.couple} invitation={invitation} />
 
             {/* SAVE THE DATE */}
-            <SaveDateSection />
+            <SaveDateSection data={sections?.save_date} invitation={invitation} />
 
             {/* AGENDA */}
-            <AgendaSection />
+            <AgendaSection data={sections?.agenda} invitation={invitation} />
 
             {/* RUNDOWN */}
             <RundownSection data={sections?.rundown} />
 
             {/* Reservation */}
-            <RsvpSection />
+            <RsvpSection data={sections?.rsvp} />
 
             {/* Gallery */}
             <GallerySection data={sections?.gallery} />
@@ -73,19 +73,19 @@ export default function SecondaryPane({ guest, wishes, invitation, sections }: P
             <WeddingGiftSection data={sections?.wedding_gift} />
 
             {/* Protocol */}
-            <ProtocolSection />
+            <ProtocolSection data={sections?.protocol} />
 
             {/* WEDDING WISH */}
-            <WeddingWishSection />
+            <WeddingWishSection wishes={wishes} />
 
             {/* CATATAN */}
             <NotesSection />
 
             {/* Footnote */}
-            <FootnoteSection />
+            <FootnoteSection invitation={invitation} />
 
             {/* FOOTER */}
-            <FooterSection />
+            <FooterSection data={sections?.footer} />
         </section>
     );
 }

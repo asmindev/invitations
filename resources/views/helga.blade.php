@@ -23,10 +23,12 @@
     <script src="/template/src/jquery.js"></script>
 
     <!-- Fonts Google - Roboto -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
 
     <!-- Fonts - Playfair Display & Marcellus -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
 
     <!-- Helga Template CSS -->
     <link rel="stylesheet" href="/template/plugin/selectize/dist/css/selectize.default.css">
@@ -80,7 +82,7 @@
 
     @routes
     @viteReactRefresh
-    @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+    @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
     @inertiaHead
 </head>
 
@@ -111,12 +113,100 @@
 
         // Music
         var MUSIC = {
-            'url': "https://media.katsudoto.id/media/audio/template/romantic-waltz.mp3",
+            'url': "{{ $page['props']['invitation']['audio_url'] ?? "https://media.katsudoto.id/media/audio/template/romantic-waltz.mp3" }}",
             'box': '#music-box'
         };
 
         // Event
         var EVENT = 1706414400;
+
+        // Particle Effect Configuration
+        var USING_EFFECT = 1;
+        var EFFECT = 1; // 1 = stars/sparkles
+        var EFFECT_VOLUME = 80;
+        var EFFECT_SPEED = 3;
+
+        const desktopMode = window.matchMedia('(min-width: 961px)');
+        if (desktopMode.matches && (USING_EFFECT == 1)) {
+            $(document).ready(function() {
+                const primaryPane = $('.primary-pane');
+                const hasPrimaryPane = primaryPane.length;
+
+                if (hasPrimaryPane) {
+                    $('#kat__effect').remove();
+                    primaryPane.find('.inner').append('<div id="kat__effect"></div>');
+
+                    // Initialize particles
+                    if (typeof tsParticles !== 'undefined') {
+                        tsParticles.load("kat__effect", {
+                            background: {
+                                color: {
+                                    value: "transparent"
+                                }
+                            },
+                            fpsLimit: 120,
+                            particles: {
+                                number: {
+                                    value: EFFECT_VOLUME,
+                                    density: {
+                                        enable: true,
+                                        value_area: 800
+                                    }
+                                },
+                                color: {
+                                    value: ["#ffffff", "#f0e6d6", "#e8dcc8"]
+                                },
+                                shape: {
+                                    type: "circle"
+                                },
+                                opacity: {
+                                    value: 0.8,
+                                    random: true,
+                                    anim: {
+                                        enable: true,
+                                        speed: 1,
+                                        opacity_min: 0.1,
+                                        sync: false
+                                    }
+                                },
+                                size: {
+                                    value: 3,
+                                    random: true,
+                                    anim: {
+                                        enable: true,
+                                        speed: EFFECT_SPEED,
+                                        size_min: 0.1,
+                                        sync: false
+                                    }
+                                },
+                                move: {
+                                    enable: true,
+                                    speed: EFFECT_SPEED / 2,
+                                    direction: "none",
+                                    random: true,
+                                    straight: false,
+                                    out_mode: "out",
+                                    bounce: false
+                                }
+                            },
+                            interactivity: {
+                                detect_on: "canvas",
+                                events: {
+                                    onhover: {
+                                        enable: false
+                                    },
+                                    onclick: {
+                                        enable: false
+                                    },
+                                    resize: true
+                                }
+                            },
+                            retina_detect: true
+                        });
+                    }
+                }
+            });
+        }
 
         // Initialize AOS
         if (typeof AOS !== 'undefined') {

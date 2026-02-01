@@ -19,12 +19,21 @@ class Invitation extends Model
         'bride_full_name',
         'bride_father',
         'bride_mother',
+        'groom_instagram',
+        'groom_photo',
+        'bride_instagram',
+        'bride_photo',
+        'cover_photo',
+        'primary_pane_photo',
+        'couple_title',
+        'couple_introduction',
         'wedding_date',
         'wedding_time',
         'hashtag',
         'cover_image',
         'opening_text',
         'closing_text',
+        'audio_url',
         'is_active',
     ];
 
@@ -87,5 +96,44 @@ class Invitation extends Model
                 $invitation->slug = \Str::slug($invitation->groom_name . '-' . $invitation->bride_name);
             }
         });
+    }
+    /**
+     * Get the groom's photo URL.
+     */
+    protected function groomPhoto(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn($value) => $value ? url('storage/' . $value) : null,
+        );
+    }
+
+    /**
+     * Get the bride's photo URL.
+     */
+    protected function bridePhoto(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn($value) => $value ? url('storage/' . $value) : null,
+        );
+    }
+
+    /**
+     * Get the cover photo URL.
+     */
+    protected function coverPhoto(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn($value) => $value ? url('storage/' . $value) : null,
+        );
+    }
+
+    /**
+     * Get the primary pane photo URL.
+     */
+    protected function primaryPanePhoto(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn($value) => $value ? url('storage/' . $value) : null,
+        );
     }
 }

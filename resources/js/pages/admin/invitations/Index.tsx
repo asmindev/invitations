@@ -1,4 +1,11 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, router } from '@inertiajs/react';
+import { Edit, Eye, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface Invitation {
@@ -26,120 +33,113 @@ export default function Index({ invitations }: Props) {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleDelete = (id: number) => {
-        if (confirm('Are you sure you want to delete this invitation?')) {
-            router.delete(route('admin.invitations.destroy', id));
+        if (confirm('Apakah Anda yakin ingin menghapus undangan ini?')) {
+            router.delete(route('admin.invitations.destroy', id), {
+                preserveScroll: true,
+                preserveState: true,
+            });
         }
     };
 
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+
     return (
-        <>
-            <Head title="Manage Invitations" />
+        <AdminLayout>
+            <Head title="Kelola Undangan" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <div className="mb-6 flex items-center justify-between">
-                                <h2 className="text-2xl font-semibold text-gray-800">Wedding Invitations</h2>
-                                <Link
-                                    href={route('admin.invitations.create')}
-                                    className="rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
-                                >
-                                    + Create New Invitation
-                                </Link>
-                            </div>
-
-                            {/* Search */}
-                            <div className="mb-4">
-                                <input
-                                    type="text"
-                                    placeholder="Search invitations..."
-                                    className="w-full rounded-md border border-gray-300 px-4 py-2"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-
-                            {/* Table */}
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Couple</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Slug</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                                                Wedding Date
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                                                Sections
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Status</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                                                Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-200 bg-white">
-                                        {invitations.data.map((invitation) => (
-                                            <tr key={invitation.id}>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-medium text-gray-900">
-                                                        {invitation.groom_name} & {invitation.bride_name}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-500">/{invitation.slug}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-500">
-                                                        {new Date(invitation.wedding_date).toLocaleDateString()}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-500">{invitation.sections_count} sections</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span
-                                                        className={`inline-flex rounded-full px-2 text-xs leading-5 font-semibold ${
-                                                            invitation.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                                        }`}
-                                                    >
-                                                        {invitation.is_active ? 'Active' : 'Inactive'}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                                                    <Link
-                                                        href={route('admin.invitations.edit', invitation.id)}
-                                                        className="mr-4 text-blue-600 hover:text-blue-900"
-                                                    >
-                                                        Edit
-                                                    </Link>
-                                                    <Link
-                                                        href={route('invitation.show', invitation.slug)}
-                                                        className="mr-4 text-green-600 hover:text-green-900"
-                                                        target="_blank"
-                                                    >
-                                                        View
-                                                    </Link>
-                                                    <button onClick={() => handleDelete(invitation.id)} className="text-red-600 hover:text-red-900">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {invitations.data.length === 0 && (
-                                <div className="py-12 text-center">
-                                    <p className="text-gray-500">No invitations found. Create your first one!</p>
-                                </div>
-                            )}
-                        </div>
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight">Undangan Digital</h1>
+                        <p className="text-muted-foreground">Kelola undangan pernikahan dan kontennya.</p>
                     </div>
+                    <Button asChild>
+                        <Link href={route('admin.invitations.create')}>
+                            <Plus className="mr-2 h-4 w-4" />
+                            Buat Undangan
+                        </Link>
+                    </Button>
                 </div>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Daftar Undangan</CardTitle>
+                        <div className="flex items-center py-4">
+                            <div className="relative w-full max-w-sm">
+                                <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input type="search" placeholder="Cari data..." className="pl-8" value={searchTerm} onChange={handleSearch} />
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Pasangan</TableHead>
+                                    <TableHead>Slug (Link)</TableHead>
+                                    <TableHead>Tanggal Pernikahan</TableHead>
+                                    <TableHead className="text-center">Seksi</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="text-right">Aksi</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {invitations.data.length > 0 ? (
+                                    invitations.data.map((invitation) => (
+                                        <TableRow key={invitation.id}>
+                                            <TableCell className="font-medium">
+                                                {invitation.groom_name} & {invitation.bride_name}
+                                            </TableCell>
+                                            <TableCell className="text-muted-foreground">/{invitation.slug}</TableCell>
+                                            <TableCell>
+                                                {new Date(invitation.wedding_date).toLocaleDateString('id-ID', {
+                                                    weekday: 'long',
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                })}
+                                            </TableCell>
+                                            <TableCell className="text-center">
+                                                <Badge variant="outline">{invitation.sections_count} seksi</Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant={invitation.is_active ? 'default' : 'destructive'}>
+                                                    {invitation.is_active ? 'Aktif' : 'Non-Aktif'}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <div className="flex justify-end gap-2">
+                                                    <Button variant="ghost" size="icon" asChild>
+                                                        <Link href={route('invitation.show', invitation.slug)} target="_blank" title="Lihat Website">
+                                                            <Eye className="h-4 w-4" />
+                                                        </Link>
+                                                    </Button>
+                                                    <Button variant="ghost" size="icon" asChild>
+                                                        <Link href={route('admin.invitations.edit', invitation.id)} title="Edit Data">
+                                                            <Edit className="h-4 w-4" />
+                                                        </Link>
+                                                    </Button>
+                                                    <Button variant="ghost" size="icon" title="Hapus" onClick={() => handleDelete(invitation.id)}>
+                                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="h-24 text-center">
+                                            Tidak ada undangan ditemukan.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
             </div>
-        </>
+        </AdminLayout>
     );
 }

@@ -30,7 +30,8 @@ return new class extends Migration
                 'protocol',
                 'wedding_wish',
                 'notes',
-                'footnote'
+                'footnote',
+                'footer'
             ]);
             $table->json('section_data');
             $table->integer('order')->default(0);
