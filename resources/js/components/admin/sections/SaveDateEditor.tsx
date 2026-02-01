@@ -88,12 +88,15 @@ export default function SaveDateEditor({ invitationId, sectionId, isVisible = tr
         transform((formData) => ({
             section_data: {
                 title: formData.title,
-                subtitle: formData.subtitle,
                 date: formData.date,
-                address: formData.address,
-                google_maps_link: formData.google_maps_link,
+                time: formData.time,
                 image_path: formData.image_path,
                 image_url: formData.image_url,
+                venue: {
+                    name: formData.venue.name,
+                    address: formData.venue.address,
+                    google_maps_url: formData.venue.google_maps_url,
+                },
             },
             order: 2,
             is_visible: formData.is_visible,

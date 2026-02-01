@@ -1,3 +1,4 @@
+import AgendaEditor from '@/components/admin/sections/AgendaEditor';
 import FooterEditor from '@/components/admin/sections/FooterEditor';
 import GalleryEditor from '@/components/admin/sections/GalleryEditor';
 import LoveStoryEditor from '@/components/admin/sections/LoveStoryEditor';
@@ -97,6 +98,7 @@ export default function Edit({ invitation, sections }: Props) {
 
         { key: 'quote', label: 'Kutipan' },
         { key: 'save_date', label: 'Simpan Tanggal' },
+        { key: 'agenda', label: "It's The Day" },
         { key: 'rundown', label: 'Susunan Acara' },
         { key: 'gallery', label: 'Galeri' },
         { key: 'love_story', label: 'Kisah Cinta' },
@@ -353,6 +355,14 @@ export default function Edit({ invitation, sections }: Props) {
                                 initialData={sections.save_date?.data}
                                 sectionId={sections.save_date?.id}
                                 isVisible={sections.save_date?.is_visible}
+                            />
+                        )}
+                        {activeTab === 'agenda' && (
+                            <AgendaEditor
+                                invitationId={invitation.id}
+                                initialData={sections.agenda?.data}
+                                sectionId={sections.agenda?.id}
+                                isVisible={sections.agenda?.is_visible}
                             />
                         )}
                         {activeTab === 'rundown' && (
