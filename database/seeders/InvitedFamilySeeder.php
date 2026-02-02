@@ -27,10 +27,10 @@ class InvitedFamilySeeder extends Seeder
             'Kel. Eko. S.Ip',
             'Kel. La Niru. S.Pd',
             'Kel. Hasrin Insal Saleh. S.Sos',
-            'Kel. La Ode Mukmm. S.E',
+            'Kel. La Ode Mukmin. S.E',
             'Kel. Rahim',
             'Kel. Asri',
-            'Kel. Nasrudin. A.Md Komp',
+            'Kel. Nasrudin. A.Md.Komp',
 
             // Kolom kanan
             'Kel. La Ode Mazadu',
