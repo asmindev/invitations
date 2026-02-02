@@ -94,7 +94,7 @@ export default function GuestsIndex({ guests, stats, filters }: Props) {
                                     placeholder="Search guests..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full sm:w-[200px] pl-8"
+                                    className="w-full pl-8 sm:w-[200px]"
                                 />
                             </div>
                         </form>

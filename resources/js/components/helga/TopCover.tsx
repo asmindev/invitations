@@ -59,7 +59,7 @@ export default function TopCover({ invitation, guest }: Props) {
 
                 <div className="wrap-inner">
                     {/* Details */}
-                    <div className="details">
+                    <div className="details" style={{ transform: 'translateY(-60px)' }}>
                         <div className="logo-wrap" data-aos="zoom-out" data-aos-duration="1200">
                             <h1 className="title-cover" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="300">
                                 {coupleNames}
@@ -81,7 +81,7 @@ export default function TopCover({ invitation, guest }: Props) {
                     </div>
 
                     {/* Bottom Item */}
-                    <div className="bottom-item">
+                    <div className="bottom-item" style={{ transform: 'translateY(-20px)' }}>
                         <p data-aos="fade-up" data-aos-duration="1200" data-aos-delay="1000">
                             Kepada Yth.
                             <br />
