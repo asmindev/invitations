@@ -84,23 +84,23 @@ export default function GuestsIndex({ guests, stats, filters }: Props) {
 
             {/* Table Card */}
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <CardTitle>Guests</CardTitle>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                         <form onSubmit={handleSearch} className="flex items-center gap-2">
-                            <div className="relative">
+                            <div className="relative w-full sm:w-auto">
                                 <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     placeholder="Search guests..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-[200px] pl-8"
+                                    className="w-full sm:w-[200px] pl-8"
                                 />
                             </div>
                         </form>
                         <Dialog open={isCreating} onOpenChange={setIsCreating}>
                             <DialogTrigger asChild>
-                                <Button size="sm">
+                                <Button size="sm" className="w-full sm:w-auto">
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Guest
                                 </Button>
