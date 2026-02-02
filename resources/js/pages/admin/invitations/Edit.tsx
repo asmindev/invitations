@@ -1,3 +1,4 @@
+import InvitedFamiliesEditor from '@/components/admin/InvitedFamiliesEditor';
 import AgendaEditor from '@/components/admin/sections/AgendaEditor';
 import FooterEditor from '@/components/admin/sections/FooterEditor';
 import GalleryEditor from '@/components/admin/sections/GalleryEditor';
