@@ -34,6 +34,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 export interface Guest {
     id: number;
     name: string;
+    companion?: string | null;
     slug: string;
     phone: string | null;
     pax: number;

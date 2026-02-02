@@ -141,6 +141,29 @@ export default function Edit({ invitation, sections }: Props) {
                     <CardContent className="p-6">
                         {activeTab === 'basic' && (
                             <form onSubmit={submitBasicInfo} className="space-y-6">
+                                <div className="space-y-4 rounded-lg border p-4">
+                                    <h3 className="font-semibold text-gray-700">The Wedding Of</h3>
+                                    <div className="space-y-2">
+                                        <Label>Judul Couple Section</Label>
+                                        <Input
+                                            value={data.couple_title}
+                                            onChange={(e) => setData('couple_title', e.target.value)}
+                                            placeholder="The Wedding Of"
+                                        />
+                                        <p className="text-xs text-muted-foreground">Judul yang ditampilkan di bagian couple section</p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Teks Pembuka (Couple Introduction)</Label>
+                                        <textarea
+                                            value={data.couple_introduction}
+                                            onChange={(e) => setData('couple_introduction', e.target.value)}
+                                            className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                            placeholder="بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ&#10;&#10;Assalamualaikum Warahmatullahi Wabarakatuh..."
+                                        />
+                                        <p className="text-xs text-muted-foreground">Teks pembuka yang ditampilkan sebelum informasi couple</p>
+                                    </div>
+                                </div>
+
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-4 rounded-lg border p-4">
                                         <h3 className="font-semibold text-gray-700">Mempelai Pria</h3>

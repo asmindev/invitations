@@ -17,9 +17,11 @@ class GuestController extends Controller
         $guests = Guest::query()
             ->with(['rsvps' => fn($q) => $q->latest()->take(1)])
             ->withCount(['rsvps', 'wishes'])
-            ->when($request->search, fn($q, $search) =>
+            ->when(
+                $request->search,
+                fn($q, $search) =>
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
             )
             ->orderBy('name')
             ->paginate(15)
@@ -45,6 +47,7 @@ class GuestController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'companion' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'pax' => 'required|integer|min:1|max:10',
         ]);
@@ -60,6 +63,7 @@ class GuestController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'companion' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'pax' => 'required|integer|min:1|max:10',
         ]);

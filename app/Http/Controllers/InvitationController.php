@@ -49,7 +49,7 @@ class InvitationController extends Controller
             ],
             'bride' => [
                 'name' => $invitation->bride_full_name,
-                'parents' => "Putri dari Bapak {$invitation->bride_father} & Ibu {$invitation->bride_mother}",
+                'parents' => "Putri Bungsu dari Bapak {$invitation->bride_father} & Ibu {$invitation->bride_mother}",
                 'instagram' => $invitation->bride_instagram,
                 'photo' => $invitation->bride_photo,
             ],
@@ -132,7 +132,7 @@ class InvitationController extends Controller
             ],
             'bride' => [
                 'name' => $invitation->bride_full_name,
-                'parents' => "Putri dari Bapak {$invitation->bride_father} & Ibu {$invitation->bride_mother}",
+                'parents' => "Putri Bungsu dari Bapak {$invitation->bride_father} & Ibu {$invitation->bride_mother}",
                 'instagram' => $invitation->bride_instagram,
                 'photo' => $invitation->bride_photo,
             ],

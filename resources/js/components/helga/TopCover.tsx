@@ -17,8 +17,8 @@ export default function TopCover({ invitation, guest }: Props) {
         }
     };
 
-    const coupleNames = invitation ? `${invitation.groom_name} & ${invitation.bride_name}` : 'Marcell & Lisa';
-    const guestName = guest ? guest.name : 'Tamu Undangan';
+    const coupleNames = invitation ? `${invitation.bride_name} & ${invitation.groom_name}` : 'Lisa & Marcell';
+    const guestName = guest ? (guest.companion ? `${guest.name} & ${guest.companion}` : guest.name) : 'Tamu Undangan';
 
     return (
         <section className="top-cover">

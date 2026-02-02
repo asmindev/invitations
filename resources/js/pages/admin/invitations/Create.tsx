@@ -19,6 +19,8 @@ export default function Create() {
         bride_full_name: '',
         bride_father: '',
         bride_mother: '',
+        couple_title: '',
+        couple_introduction: '',
         wedding_date: '',
         wedding_time: '',
         hashtag: '',
@@ -156,6 +158,37 @@ export default function Create() {
                                     </CardContent>
                                 </Card>
                             </div>
+
+                            {/* Couple Section Details */}
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-base">The Wedding Of Section</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="couple_title">Title</Label>
+                                        <Input
+                                            id="couple_title"
+                                            type="text"
+                                            placeholder="The Wedding Of"
+                                            value={data.couple_title}
+                                            onChange={(e) => setData('couple_title', e.target.value)}
+                                        />
+                                        <p className="text-xs text-muted-foreground">Judul yang ditampilkan di bagian couple section</p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="couple_introduction">Opening Text (Couple Introduction)</Label>
+                                        <Textarea
+                                            id="couple_introduction"
+                                            placeholder="بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ&#10;&#10;Assalamualaikum Warahmatullahi Wabarakatuh..."
+                                            value={data.couple_introduction}
+                                            onChange={(e) => setData('couple_introduction', e.target.value)}
+                                            rows={5}
+                                        />
+                                        <p className="text-xs text-muted-foreground">Teks pembuka yang ditampilkan sebelum informasi couple</p>
+                                    </div>
+                                </CardContent>
+                            </Card>
 
                             {/* Wedding Details */}
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -3,7 +3,7 @@ interface Props {
 }
 
 export default function CoverSection({ invitation }: Props) {
-    const coupleNames = invitation ? `${invitation.groom_name} & ${invitation.bride_name}` : 'Marcell & Lisa';
+    const coupleNames = invitation ? `${invitation.bride_name} & ${invitation.groom_name}` : 'Lisa & Marcell';
     const hashtag = invitation?.hashtag || '#PromDateToLifeMate';
 
     // Use database cover_photo if available, fallback to hardcoded URL

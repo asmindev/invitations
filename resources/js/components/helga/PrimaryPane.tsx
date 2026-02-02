@@ -10,9 +10,9 @@ interface Props {
 }
 
 export default function PrimaryPane({ invitation, guest }: Props) {
-    const groomName = invitation?.groom_name || 'Marcell';
     const brideName = invitation?.bride_name || 'Lisa';
-    const guestName = guest ? guest.name : 'Chindy & Partner';
+    const groomName = invitation?.groom_name || 'Marcell';
+    const guestName = guest ? (guest.companion ? `${guest.name} & ${guest.companion}` : guest.name) : 'Chindy & Partner';
 
     // Use database primary_pane_photo if available, fallback to hardcoded URL
     const defaultPrimaryPanePhoto =
@@ -59,7 +59,7 @@ export default function PrimaryPane({ invitation, guest }: Props) {
                 {/* Details */}
                 <div className="details">
                     <h1 data-aos="zoom-out" data-aos-duration="1200">
-                        {groomName} & {brideName}
+                        {brideName} & {groomName}
                     </h1>
                     <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                         Kepada Yth.

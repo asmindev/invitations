@@ -93,7 +93,7 @@ class Invitation extends Model
 
         static::creating(function ($invitation) {
             if (empty($invitation->slug)) {
-                $invitation->slug = \Str::slug($invitation->groom_name . '-' . $invitation->bride_name);
+                $invitation->slug = \Str::slug($invitation->bride_name . '-' . $invitation->groom_name);
             }
         });
     }

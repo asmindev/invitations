@@ -9,9 +9,9 @@ interface Props {
 
 export default function FootnoteSection({ invitation }: Props) {
     // Extract names for the couple title
-    const groomName = invitation?.groom_name?.split(' ')[0] || 'Marcell';
     const brideName = invitation?.bride_name?.split(' ')[0] || 'Lisa';
-    const coupleTitle = `${groomName} & ${brideName}`;
+    const groomName = invitation?.groom_name?.split(' ')[0] || 'Marcell';
+    const coupleTitle = `${brideName} & ${groomName}`;
 
     // Format the wedding date
     const formatDate = (dateString?: string) => {
