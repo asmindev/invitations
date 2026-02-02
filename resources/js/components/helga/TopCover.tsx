@@ -89,7 +89,33 @@ export default function TopCover({ invitation, guest }: Props) {
                         </p>
 
                         <div className="btn-open" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="1200">
-                            <button type="button" onClick={handleOpenInvitation} className="link" id="startToExplore">
+                            <button
+                                type="button"
+                                onClick={handleOpenInvitation}
+                                className="link"
+                                id="startToExplore"
+                                style={{
+                                    backgroundColor: '#c9a86a',
+                                    color: '#ffffff',
+                                    fontWeight: '600',
+                                    letterSpacing: '0.5px',
+                                    paddingLeft: '48px',
+                                    paddingRight: '48px',
+                                    boxShadow: '0 8px 24px rgba(201, 168, 106, 0.4)',
+                                    transform: 'translateY(0)',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#b8935a';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(201, 168, 106, 0.5)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#c9a86a';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(201, 168, 106, 0.4)';
+                                }}
+                            >
                                 Buka Undangan
                             </button>
                         </div>
