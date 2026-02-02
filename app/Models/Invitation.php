@@ -69,6 +69,14 @@ class Invitation extends Model
     }
 
     /**
+     * Get invited families
+     */
+    public function invitedFamilies()
+    {
+        return $this->hasMany(InvitedFamily::class)->orderBy('order');
+    }
+
+    /**
      * Scope to get active invitations
      */
     public function scopeActive($query)

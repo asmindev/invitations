@@ -22,9 +22,10 @@ interface Props {
     wishes?: any[];
     invitation?: Invitation;
     sections?: Record<string, any>;
+    invited_families?: any[];
 }
 
-export default function HelgaTemplate({ guest, wishes, invitation, sections }: Props) {
+export default function HelgaTemplate({ guest, wishes, invitation, sections, invited_families }: Props) {
     useEffect(() => {
         // Initialize AOS (Animate On Scroll)
         if (typeof window !== 'undefined' && window.AOS) {
@@ -43,7 +44,7 @@ export default function HelgaTemplate({ guest, wishes, invitation, sections }: P
                 <PrimaryPane invitation={invitation} guest={guest} />
 
                 {/* Secondary Pane - Right Side (Desktop) / Main Content (Mobile) */}
-                <SecondaryPane guest={guest} wishes={wishes} invitation={invitation} sections={sections} />
+                <SecondaryPane guest={guest} wishes={wishes} invitation={invitation} sections={sections} invited_families={invited_families} />
             </section>
 
             {/* Music Player */}

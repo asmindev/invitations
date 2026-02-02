@@ -1,5 +1,6 @@
 import CoupleSection from './CoupleSection';
 import CoverSection from './CoverSection';
+import InvitedFamiliesSection from './InvitedFamiliesSection';
 import QuoteSection from './QuoteSection';
 import SaveDateSection from './SaveDateSection';
 import {
@@ -22,9 +23,10 @@ interface Props {
     wishes?: any[];
     invitation?: any;
     sections?: Record<string, any>;
+    invited_families?: any[];
 }
 
-export default function SecondaryPane({ guest, wishes, invitation, sections }: Props) {
+export default function SecondaryPane({ guest, wishes, invitation, sections, invited_families }: Props) {
     return (
         <section className="secondary-pane">
             {/* TOP COVER */}
@@ -44,6 +46,9 @@ export default function SecondaryPane({ guest, wishes, invitation, sections }: P
 
             {/* AGENDA */}
             {sections?.agenda && <AgendaSection data={sections.agenda} invitation={invitation} />}
+
+            {/* INVITED FAMILIES */}
+            {invited_families && invited_families.length > 0 && <InvitedFamiliesSection families={invited_families} />}
 
             {/* RUNDOWN */}
             {sections?.rundown && <RundownSection data={sections.rundown} />}

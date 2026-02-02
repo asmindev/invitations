@@ -91,7 +91,7 @@ class InvitationController extends Controller
      */
     public function edit(Invitation $invitation)
     {
-        $invitation->load('sections');
+        $invitation->load('sections', 'invitedFamilies');
 
         // Transform sections into associative array by type with section_data and visibility
         $sections = $invitation->sections->groupBy('section_type')->map(function ($sectionGroup) {
@@ -107,6 +107,7 @@ class InvitationController extends Controller
         return Inertia::render('admin/invitations/Edit', [
             'invitation' => $invitation,
             'sections' => $sections,
+            'invited_families' => $invitation->invitedFamilies,
         ]);
     }
 

@@ -44,6 +44,12 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Gallery & Section image uploads
     Route::post('/invitations/{invitation}/gallery/upload', [\App\Http\Controllers\Admin\MediaController::class, 'upload'])->name('invitations.gallery.upload');
     Route::delete('/invitations/{invitation}/gallery/delete', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('invitations.gallery.destroy');
+
+    // Invited Families
+    Route::post('/invited-families', [\App\Http\Controllers\Admin\InvitedFamilyController::class, 'store'])->name('invited-families.store');
+    Route::put('/invited-families/{invitedFamily}', [\App\Http\Controllers\Admin\InvitedFamilyController::class, 'update'])->name('invited-families.update');
+    Route::delete('/invited-families/{invitedFamily}', [\App\Http\Controllers\Admin\InvitedFamilyController::class, 'destroy'])->name('invited-families.destroy');
+    Route::post('/invited-families/reorder', [\App\Http\Controllers\Admin\InvitedFamilyController::class, 'reorder'])->name('invited-families.reorder');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

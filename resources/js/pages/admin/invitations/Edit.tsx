@@ -55,9 +55,14 @@ interface Props {
             order: number;
         }
     >;
+    invited_families: Array<{
+        id: number;
+        family_name: string;
+        order: number;
+    }>;
 }
 
-export default function Edit({ invitation, sections }: Props) {
+export default function Edit({ invitation, sections, invited_families = [] }: Props) {
     const [activeTab, setActiveTab] = useState('basic');
 
     const { data, setData, post, processing, errors } = useForm({
@@ -99,6 +104,7 @@ export default function Edit({ invitation, sections }: Props) {
         { key: 'quote', label: 'Kutipan' },
         { key: 'save_date', label: 'Simpan Tanggal' },
         { key: 'agenda', label: "It's The Day" },
+        { key: 'invited_families', label: 'Turut Mengundang' },
         { key: 'rundown', label: 'Susunan Acara' },
         { key: 'gallery', label: 'Galeri' },
         { key: 'love_story', label: 'Kisah Cinta' },
@@ -388,6 +394,7 @@ export default function Edit({ invitation, sections }: Props) {
                                 isVisible={sections.agenda?.is_visible}
                             />
                         )}
+                        {activeTab === 'invited_families' && <InvitedFamiliesEditor invitationId={invitation.id} families={invited_families} />}
                         {activeTab === 'rundown' && (
                             <RundownEditor
                                 invitationId={invitation.id}

@@ -20,7 +20,7 @@ class InvitationController extends Controller
         $wishes = Wish::with('guest')->latest()->limit(50)->get();
 
         // Load the first active invitation with sections
-        $invitation = Invitation::with(['visibleSections'])
+        $invitation = Invitation::with(['visibleSections', 'invitedFamilies'])
             ->active()
             ->first();
 
@@ -84,6 +84,7 @@ class InvitationController extends Controller
                 'audio_url' => $invitation->audio_url,
             ],
             'sections' => $sectionsData,
+            'invited_families' => $invitation->invitedFamilies,
         ])->rootView('helga');
     }
 
@@ -97,12 +98,12 @@ class InvitationController extends Controller
 
         if ($guest) {
             // Guest-based flow - load the first active invitation
-            $invitation = Invitation::with(['visibleSections'])
+            $invitation = Invitation::with(['visibleSections', 'invitedFamilies'])
                 ->active()
                 ->first();
         } else {
             // Invitation slug flow
-            $invitation = Invitation::with(['visibleSections'])
+            $invitation = Invitation::with(['visibleSections', 'invitedFamilies'])
                 ->active()
                 ->bySlug($slug)
                 ->firstOrFail();
@@ -126,7 +127,7 @@ class InvitationController extends Controller
             'opening_text' => $invitation->couple_introduction ?? 'Assalamualaikum...',
             'groom' => [
                 'name' => $invitation->groom_full_name,
-                'parents' => "Putra dari Bapak {$invitation->groom_father} & Ibu {$invitation->groom_mother}",
+                'parents' => "Putra pertama dari Bapak {$invitation->groom_father} & Ibu {$invitation->groom_mother}",
                 'instagram' => $invitation->groom_instagram,
                 'photo' => $invitation->groom_photo,
             ],
@@ -167,6 +168,7 @@ class InvitationController extends Controller
                 'audio_url' => $invitation->audio_url,
             ],
             'sections' => $sectionsData,
+            'invited_families' => $invitation->invitedFamilies,
         ])->rootView('helga');
     }
 }
