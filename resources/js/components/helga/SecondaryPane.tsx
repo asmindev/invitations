@@ -48,7 +48,7 @@ export default function SecondaryPane({ guest, wishes, invitation, sections, inv
             {sections?.agenda && <AgendaSection data={sections.agenda} invitation={invitation} />}
 
             {/* INVITED FAMILIES */}
-            {invited_families && invited_families.length > 0 && <InvitedFamiliesSection families={invited_families} />}
+            {invited_families && invited_families.length > 0 && <InvitedFamiliesSection families={invited_families} invitation={invitation} />}
 
             {/* RUNDOWN */}
             {sections?.rundown && <RundownSection data={sections.rundown} />}

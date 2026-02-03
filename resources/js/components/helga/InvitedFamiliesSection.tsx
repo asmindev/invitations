@@ -4,13 +4,21 @@ interface InvitedFamily {
     order: number;
 }
 
-interface Props {
-    families: InvitedFamily[];
+interface Invitation {
+    groom_name?: string;
+    groom_father?: string;
+    groom_mother?: string;
+    bride_name?: string;
+    bride_father?: string;
+    bride_mother?: string;
 }
 
-export default function InvitedFamiliesSection({ families }: Props) {
-    if (!families || families.length === 0) return null;
+interface Props {
+    families: InvitedFamily[];
+    invitation?: Invitation;
+}
 
+export default function InvitedFamiliesSection({ families, invitation }: Props) {
     // Split families into 2 columns
     const midpoint = Math.ceil(families.length / 2);
     const leftColumn = families.slice(0, midpoint);
@@ -20,27 +28,53 @@ export default function InvitedFamiliesSection({ families }: Props) {
         <section className="invited-families-wrap">
             <div className="invited-families">
                 <div className="section-head" data-aos="fade-up" data-aos-duration="1000">
-                    <h2 className="section-title">Turut Mengundang</h2>
+                    <h2 className="section-title">Hormat Kami.</h2>
                 </div>
 
-                <div className="families-grid" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-                    <div className="families-column">
-                        {leftColumn.map((family, index) => (
-                            <div key={family.id} className="family-item" data-aos="fade-right" data-aos-duration="800" data-aos-delay={index * 50}>
-                                <span className="bullet">•</span>
-                                <span className="family-name">{family.family_name}</span>
-                            </div>
-                        ))}
+                {/* Parents Names Header */}
+                <div className="parents-header" data-aos="fade-up" data-aos-duration="1000">
+                    <div className="parent-name">
+                        <strong>Bpk. {invitation?.bride_father || 'Asri'} (Alm.)</strong>
+                        <br />
+                        <strong>Ibu {invitation?.bride_mother || 'Wa Ode Uamba'}</strong>
                     </div>
-                    <div className="families-column">
-                        {rightColumn.map((family, index) => (
-                            <div key={family.id} className="family-item" data-aos="fade-left" data-aos-duration="800" data-aos-delay={index * 50}>
-                                <span className="bullet">•</span>
-                                <span className="family-name">{family.family_name}</span>
-                            </div>
-                        ))}
+                    <div className="parent-name">
+                        <strong>Bpk. {invitation?.groom_father || 'Santoso'}</strong>
+                        <br />
+                        <strong>Ibu {invitation?.groom_mother || 'Wa Kolaki'}</strong>
                     </div>
                 </div>
+
+                {/* Turut Mengundang Title */}
+                <div className="turut-title" data-aos="fade-up" data-aos-duration="1000">
+                    <em>Turut Mengundang</em>
+                </div>
+
+                {/* Families Grid */}
+                {families && families.length > 0 && (
+                    <div className="families-grid" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                        <div className="families-column">
+                            {leftColumn.map((family, index) => (
+                                <div
+                                    key={family.id}
+                                    className="family-item"
+                                    data-aos="fade-right"
+                                    data-aos-duration="800"
+                                    data-aos-delay={index * 50}
+                                >
+                                    <span className="family-name">{family.family_name}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="families-column">
+                            {rightColumn.map((family, index) => (
+                                <div key={family.id} className="family-item" data-aos="fade-left" data-aos-duration="800" data-aos-delay={index * 50}>
+                                    <span className="family-name">{family.family_name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <style jsx>{`
@@ -56,15 +90,42 @@ export default function InvitedFamiliesSection({ families }: Props) {
 
                 .section-head {
                     text-align: center;
-                    margin-bottom: 40px;
+                    margin-bottom: 30px;
                 }
 
                 .section-title {
                     font-family: 'Playfair Display', serif;
-                    font-size: 2rem;
-                    color: #c9a86a;
+                    font-size: 1.8rem;
+                    color: #333;
                     margin: 0;
                     font-weight: 600;
+                }
+
+                .parents-header {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 20px;
+                    margin-bottom: 25px;
+                    text-align: center;
+                }
+
+                .parent-name {
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 0.9rem;
+                    color: #333;
+                    line-height: 1.6;
+                }
+
+                .parent-name strong {
+                    font-weight: 600;
+                }
+
+                .turut-title {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    font-family: 'Playfair Display', serif;
+                    font-size: 1.1rem;
+                    color: #333;
                 }
 
                 .families-grid {
@@ -77,25 +138,16 @@ export default function InvitedFamiliesSection({ families }: Props) {
                 .families-column {
                     display: flex;
                     flex-direction: column;
-                    gap: 8px;
+                    gap: 6px;
                 }
 
                 .family-item {
                     display: flex;
                     align-items: flex-start;
-                    gap: 8px;
                     font-family: 'Poppins', sans-serif;
                     font-size: 0.85rem;
                     color: #333;
                     line-height: 1.4;
-                }
-
-                .bullet {
-                    color: #c9a86a;
-                    font-size: 1rem;
-                    font-weight: bold;
-                    line-height: 1.4;
-                    flex-shrink: 0;
                 }
 
                 .family-name {
