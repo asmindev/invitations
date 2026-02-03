@@ -7,17 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <meta name="format-detection" content="telephone=no">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
+
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Marcell & Lisa - Wedding Invitation">
-    <meta name="description" content="Hi, You're invited to our wedding ceremony - Marcell & Lisa Wedding">
+    @php
+    $invitation = $page['props']['invitation'] ?? null;
+    $brideShortName = $invitation['bride_name'] ?? 'Bride';
+    $groomShortName = $invitation['groom_name'] ?? 'Groom';
+    $coupleNames = $brideShortName . ' & ' . $groomShortName;
+    $pageTitle = $coupleNames . ' - Wedding Invitation';
+    $pageDescription = 'Hi, You\'re invited to our wedding ceremony - ' . $coupleNames . ' Wedding';
+    $coverImage = $invitation['cover_photo'] ?? '';
+    $siteUrl = url()->current();
+    @endphp
+    <meta name="title" content="{{ $pageTitle }}">
+    <meta name="description" content="{{ $pageDescription }}">
+    <meta name="keywords" content="wedding invitation, {{ $coupleNames }}, pernikahan, undangan pernikahan">
+    <meta name="author" content="{{ $coupleNames }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ $siteUrl }}" />
     <meta property="og:site_name" content="Wedding Invitation">
-    <meta property="og:title" content="Marcell & Lisa - Wedding Invitation" />
-    <meta property="og:description" content="Hi, You're invited to our wedding ceremony - Marcell & Lisa Wedding" />
+    <meta property="og:title" content="{{ $pageTitle }}" />
+    <meta property="og:description" content="{{ $pageDescription }}" />
+    <meta property="og:image" content="{{ $coverImage }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-    <title inertia>{{ config('app.name', 'Wedding Invitation') }}</title>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="{{ $siteUrl }}" />
+    <meta name="twitter:title" content="{{ $pageTitle }}" />
+    <meta name="twitter:description" content="{{ $pageDescription }}" />
+    <meta name="twitter:image" content="{{ $coverImage }}" />
+
+    <title inertia>{{ $pageTitle }}</title>
 
     <!-- jQuery (required by template) -->
     <script src="/template/src/jquery.js"></script>
