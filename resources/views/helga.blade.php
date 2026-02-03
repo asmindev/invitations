@@ -22,6 +22,10 @@
     $pageTitle = $coupleNames . ' - Wedding Invitation';
     $pageDescription = 'Hi, You\'re invited to our wedding ceremony - ' . $coupleNames . ' Wedding';
     $coverImage = $invitation['cover_photo'] ?? '';
+    // Ensure absolute URL for image
+    if ($coverImage && !str_starts_with($coverImage, 'http')) {
+    $coverImage = url($coverImage);
+    }
     $siteUrl = url()->current();
     @endphp
     <meta name="title" content="{{ $pageTitle }}">
@@ -36,8 +40,11 @@
     <meta property="og:title" content="{{ $pageTitle }}" />
     <meta property="og:description" content="{{ $pageDescription }}" />
     <meta property="og:image" content="{{ $coverImage }}" />
+    <meta property="og:image:secure_url" content="{{ $coverImage }}" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="{{ $pageTitle }}" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -45,6 +52,7 @@
     <meta name="twitter:title" content="{{ $pageTitle }}" />
     <meta name="twitter:description" content="{{ $pageDescription }}" />
     <meta name="twitter:image" content="{{ $coverImage }}" />
+    <meta name="twitter:image:alt" content="{{ $pageTitle }}" />
 
     <title inertia>{{ $pageTitle }}</title>
 
