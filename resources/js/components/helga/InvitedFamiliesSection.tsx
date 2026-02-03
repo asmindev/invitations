@@ -34,14 +34,14 @@ export default function InvitedFamiliesSection({ families, invitation }: Props) 
                 {/* Parents Names Header */}
                 <div className="parents-header" data-aos="fade-up" data-aos-duration="1000">
                     <div className="parent-name">
-                        <strong>Bpk. {invitation?.bride_father || 'Asri'} (Alm.)</strong>
+                        <strong>Bpk. {invitation?.bride_father}</strong>
                         <br />
-                        <strong>Ibu {invitation?.bride_mother || 'Wa Ode Uamba'}</strong>
+                        <strong>Ibu {invitation?.bride_mother}</strong>
                     </div>
                     <div className="parent-name">
-                        <strong>Bpk. {invitation?.groom_father || 'Santoso'}</strong>
+                        <strong>Bpk. {invitation?.groom_father}</strong>
                         <br />
-                        <strong>Ibu {invitation?.groom_mother || 'Wa Kolaki'}</strong>
+                        <strong>Ibu {invitation?.groom_mother}</strong>
                     </div>
                 </div>
 
