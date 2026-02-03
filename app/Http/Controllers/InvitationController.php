@@ -43,7 +43,7 @@ class InvitationController extends Controller
             'opening_text' => $invitation->couple_introduction ?? 'Assalamualaikum...',
             'groom' => [
                 'name' => $invitation->groom_full_name,
-                'parents' => "Putra dari Bapak {$invitation->groom_father} & Ibu {$invitation->groom_mother}",
+                'parents' => "Putra Pertama dari Bapak {$invitation->groom_father} & Ibu {$invitation->groom_mother}",
                 'instagram' => $invitation->groom_instagram,
                 'photo' => $invitation->groom_photo,
             ],
