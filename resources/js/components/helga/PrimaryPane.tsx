@@ -12,7 +12,7 @@ interface Props {
 export default function PrimaryPane({ invitation, guest }: Props) {
     const brideName = invitation?.bride_name || 'Lisa';
     const groomName = invitation?.groom_name || 'Marcell';
-    const guestName = guest ? (guest.companion ? `${guest.name} & ${guest.companion}` : guest.name) : 'Chindy & Partner';
+    const guestName = guest ? (guest.companion ? `${guest.name} & ${guest.companion}` : guest.name) : 'Tamu undangan';
 
     // Use database primary_pane_photo if available, fallback to hardcoded URL
     const defaultPrimaryPanePhoto =
