@@ -68,6 +68,33 @@ class GuestAminSeeder extends Seeder
             'Binsar Andi' => 'partner',
             'Bro Irsyad' => 'pasangan',
             'Alumni SMK N 4 BB angkatan 2014' => null,
+            'Bang faber William' => 'kekasih',
+            'Armin' => 'istri',
+            'Bang altozt' => 'istri',
+            'Bang Anto' => 'istri',
+            'Bang petriadi' => 'istri',
+            'Bang liner' => 'istri',
+            'Bas Asnawi' => 'istri',
+            'Ban Jun' => 'istri',
+            'Chip anor' => 'istri',
+            'Bas Tommy' => 'istri',
+            'Chip hasriful' => 'istri',
+            'Pak firman' => 'indah',
+            'Kiky Resky' => 'kekasih',
+            'Kapten bangun' => 'istri',
+            'Mas Reza' => 'partner',
+            'Bro fajar' => 'pasangan',
+            'Muh. Rizawal guntur' => 'istri',
+            'Bro Ichal' => 'istri',
+            'Muhammad Rifai' => 'istri',
+            'Bro nahar' => 'partner',
+            'Pak aser duwiri ,s.pd ,M.pd' => null,
+            'Ronald' => null,
+            'Bang kur' => 'kekasih',
+            'Seken Ahmad' => 'pasangan',
+            'Serma Asfan ruslani' => 'ibu',
+            'Masbro Wahyu' => 'kekasih',
+            'Laode zulmaeta ,S.ak' => 'ibu',
         ];
 
         $guestList = [];
@@ -89,24 +116,32 @@ class GuestAminSeeder extends Seeder
         ];
 
         foreach ($guestList as $index => $guestData) {
-            // Generate unique slug
-            $baseSlug = Str::slug($guestData['name']);
-            $slug = $baseSlug;
-            $counter = 1;
+            $existingGuest = Guest::where('name', $guestData['name'])->first();
 
-            // Check if slug exists and make it unique
-            while (Guest::where('slug', $slug)->exists()) {
-                $slug = $baseSlug . '-' . $counter;
-                $counter++;
+            if (!$existingGuest) {
+                // Generate unique slug for new guests
+                $baseSlug = Str::slug($guestData['name']);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                while (Guest::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+            } else {
+                // Reuse existing slug
+                $slug = $existingGuest->slug;
             }
 
-            // Create guest
-            $guest = Guest::create([
-                'name' => $guestData['name'],
-                'companion' => $guestData['companion'],
-                'slug' => $slug,
-                'pax' => $guestData['companion'] ? 2 : 1,
-            ]);
+            // Create or update guest
+            $guest = Guest::updateOrCreate(
+                ['name' => $guestData['name']],
+                [
+                    'companion' => $guestData['companion'],
+                    'slug' => $slug,
+                    'pax' => $guestData['companion'] ? 2 : 1,
+                ]
+            );
 
             // Generate invitation URL
             $invitationUrl = $baseUrl . '?to=' . $slug;
